@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "029182eb-c103-404d-b0cc-e179f911ef5f",
+		"name": "Interlegis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11189178"
+	},
+	"item": [
+		{
+			"name": "CasaLegislativa",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "TEYpGFiYmydkEKPLIqkivrcqUG5JzcfZG8fyHY1B1EdM58iuBRopn",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sapl.simoes.pi.leg.br/api/base/casalegislativa/1/",
+					"protocol": "https",
+					"host": [
+						"sapl",
+						"simoes",
+						"pi",
+						"leg",
+						"br"
+					],
+					"path": [
+						"api",
+						"base",
+						"casalegislativa",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

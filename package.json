@@ -1,0 +1,26 @@
+{
+  "name": "turborepo-nuxt-boilerplate",
+  "version": "0.0.5",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "@myturborepo/eslint-config-custom": "workspace:*",
+    "@release-it/conventional-changelog": "^6.0.0",
+    "release-it": "^16.0.0",
+    "turbo": "^1.10.7"
+  },
+  "engines": {
+    "node": ">=v18.16.0"
+  },
+  "packageManager": "pnpm@7.32.5"
+}
