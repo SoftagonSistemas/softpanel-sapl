@@ -1,19 +1,17 @@
 <script setup lang="ts">
+const utilities = new UseUtils()
+const apiSPL = new UseSessaoPlenaria()
 
-const utilities = new useUtils()
-const apiSPL = new useSessaoPlenaria()
-
-const ScreenShow = ref({ screen: "NoSection", scenario: 0 })
+const ScreenShow = ref({ screen: 'NoSection', scenario: 0 })
 const today = utilities.AmericanDateToday()
 const timeExpedienteRead = ref()
 const oldExp = ref()
 
 const { data, refresh, pending } = await useAsyncData(async () => {
-
   const sessaoToday = await apiSPL.sessaoPlenaria({ hoje: today })
   const [expedienteResult, orderDay] = await Promise.all([
     apiSPL.expedienteSessão(sessaoToday?.id),
-    apiSPL.dayOrderSessão(sessaoToday?.id)
+    apiSPL.dayOrderSessão(sessaoToday?.id),
   ])
 
   const { expediente, treatingTimeExpedienteRead, treatingRegistroExpediente } = await treatingExpedientAndResult(expedienteResult, oldExp, timeExpedienteRead, ScreenShow.value)
@@ -23,7 +21,7 @@ const { data, refresh, pending } = await useAsyncData(async () => {
   timeExpedienteRead.value = treatingTimeExpedienteRead
 
   return {
-    sessaoToday, expediente, registroExpediente, orderDay
+    sessaoToday, expediente, registroExpediente, orderDay,
   }
 }, { lazy: true })
 
@@ -33,7 +31,6 @@ const registro = ref(data.value?.registroExpediente)
 const orderDay = ref(data.value?.orderDay)
 
 setInterval(async () => {
-
   if (!pending.value) {
     refresh()
 
@@ -41,40 +38,38 @@ setInterval(async () => {
     expediente.value = data.value?.expediente
     registro.value = data.value?.registroExpediente
     orderDay.value = data.value?.orderDay
-
   }
 }, 4000)
 
 watch(sessaoToday, () => {
   ScreenShow.value = changeScreen(contextConfig(sessaoToday.value, expediente.value, registro.value, orderDay.value), ScreenShow.value)
 })
-
 </script>
-
 
 <template>
   <div id="index">
     <div class="heitgh-index">
+      <NoSection v-if="ScreenShow.screen === 'NoSection'" />
 
-
-      <NoSection v-if="ScreenShow.screen == 'NoSection'" />
-
-      <div class="text-grey-lighten-5 text-h2 text-center" v-if="ScreenShow.screen == 'SectionInitiate'">
+      <div v-if="ScreenShow.screen === 'SectionInitiate'" class="text-grey-lighten-5 text-h2 text-center">
         Sessão em andamento!
       </div>
 
+      <Proposition
+        v-if="ScreenShow.screen === 'ShowMaterial'"
+        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
+      />
 
+      <Voting
+        v-if="ScreenShow.screen === 'VotationOpen'" status="discussao" :sessao="sessaoToday"
+        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay" :order-day="ScreenShow.scenario"
+      />
 
-      <Proposition :expediente="ScreenShow.scenario == 1 ? expediente : orderDay"
-        v-if="ScreenShow.screen == 'ShowMaterial'" />
-
-      <Voting status="discussao" :sessao="sessaoToday" :expediente="ScreenShow.scenario == 1 ? expediente : orderDay"
-        :order-day="ScreenShow.scenario" v-if="ScreenShow.screen == 'VotationOpen'" />
-
-      <VotingResults :result="registro" :registro="registro"
-        :expediente="ScreenShow.scenario == 1 ? expediente : orderDay" :sessao="sessaoToday"
-        v-if="ScreenShow.screen == 'PollResult'" />
-
+      <VotingResults
+        v-if="ScreenShow.screen === 'PollResult'" :result="registro"
+        :registro="registro" :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
+        :sessao="sessaoToday"
+      />
     </div>
     <Footer-index />
   </div>

@@ -1,6 +1,6 @@
 class SessaoPlenaria {
   config = useRuntimeConfig()
-  utils = new useUtils()
+  utils = new UseUtils()
   /**
    * Dados da sessaoPlenaria
    * @url https://sapl.CIDADE.leg.br/api/schema/swagger-ui/
@@ -9,477 +9,526 @@ class SessaoPlenaria {
    * @param params.id  Pega apenas uma
    * @returns json com todos os campos da sessão
    */
-  async sessaoPlenaria(params: { id?: number, hoje?: String, oldSections?: Boolean, page?: number}) {
+  async sessaoPlenaria(params: { id?: number; hoje?: string; oldSections?: boolean; page?: number }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
       if (params.oldSections) {
-        params.page = !params.page?  1 : params.page
+        params.page = !params.page ? 1 : params.page
         const data: any = await $fetch(
-          `${this.config.public["saplUrl"]}sessao/sessaoplenaria?finalizada__istartswith=true&page=${params.page}`,
+          `${this.config.public.saplUrl}sessao/sessaoplenaria?finalizada__istartswith=true&page=${params.page}`,
           {
-            headers: headers
-          }
+            headers,
+          },
         )
-        if(!data.pagination) return null
+        if (!data.pagination)
+          return null
 
         return data
       }
       if (params.hoje) {
         const data: any = await $fetch(
-          `${this.config.public["saplUrl"]}sessao/sessaoplenaria/?data_inicio=${params.hoje}`,
+          `${this.config.public.saplUrl}sessao/sessaoplenaria/?data_inicio=${params.hoje}`,
           {
-            headers: headers
-          }
+            headers,
+          },
         )
-        if(!data) return null
+        if (!data)
+          return null
         return data.results[0]
       }
       if (params.id) {
         const data: any = await $fetch(
-          `${this.config.public["saplUrl"]}sessao/sessaoplenaria/${params.id}`,
+          `${this.config.public.saplUrl}sessao/sessaoplenaria/${params.id}`,
           {
-            headers: headers
-          }
+            headers,
+          },
         )
 
         return data
       }
       const data: any = await $fetch(
-        `${this.config.public["saplUrl"]}sessao-plenaria`,
+        `${this.config.public.saplUrl}sessao-plenaria`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data.results.length) return data?.results
+      if (data.results.length)
+        return data?.results
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async casalegislativa(params = { id: 1 }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
       const data: any = await $fetch(
-        `${this.config.public["saplUrl"]}base/casalegislativa/${params.id}`,
+        `${this.config.public.saplUrl}base/casalegislativa/${params.id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data) return data
+      if (data)
+        return data
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async expedientes(params: any) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
       const data: any = await $fetch(
-        `${this.config.public["saplUrl"]}sessao/sessaoplenaria/${params.id}/expedientes/`,
+        `${this.config.public.saplUrl}sessao/sessaoplenaria/${params.id}/expedientes/`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data.results.length) return data.results
+      if (data.results.length)
+        return data.results
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
-  async sessaoPlenariaPresenca(params: { id?: number, atualizar?: Boolean }) {
+  async sessaoPlenariaPresenca(params: { id?: number; atualizar?: boolean }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
       const data: any = await useAsyncData(
         'parla',
         () =>
           $fetch(
-            `${this.config.public["saplUrl"]}sessao/sessaoplenariapresenca?sessao_plenaria=${params.id}`,
-            { headers: headers, retry: 3 }
-          )
+            `${this.config.public.saplUrl}sessao/sessaoplenariapresenca?sessao_plenaria=${params.id}`,
+            { headers, retry: 3 },
+          ),
       )
-
 
       const retorno = data?.results
       if (retorno?.length) {
         retorno.map(async (r: any, i: number, x: any) => {
           if (r.parlamentar) {
             const parlamentar: any = await $fetch(
-              `${this.config.public["saplUrl"]}parlamentares/parlamentar/${r.parlamentar}`,
+              `${this.config.public.saplUrl}parlamentares/parlamentar/${r.parlamentar}`,
               {
-                headers: headers
-              }
+                headers,
+              },
             )
             x[i].presente = parlamentar.data
           }
         })
         return retorno
-      } else return null
-    } catch (e) {
+      }
+      else { return null }
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
-  async getParlamentar(params:{id?: number, all: boolean, page?: number}) {
-    
+  async getParlamentar(params: { id?: number; all: boolean; page?: number }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
       if (params.all) {
-        params.page = !params.page? 1 : params.page
+        params.page = !params.page ? 1 : params.page
         const parlamentarys: any = await $fetch(
-          `${this.config.public["saplUrl"]}parlamentares/parlamentar?page=${params.page}`,
+          `${this.config.public.saplUrl}parlamentares/parlamentar?page=${params.page}`,
           {
-            headers: headers
-          }
+            headers,
+          },
         )
-        if (!parlamentarys.pagination) return null
-        
+        if (!parlamentarys.pagination)
+          return null
+
         return parlamentarys
       }
 
-      if (typeof params.id === 'undefined') return null
+      if (typeof params.id === 'undefined')
+        return null
 
-      const data: any= await $fetch(
-        `${this.config.public["saplUrl"]}parlamentares/parlamentar/${params.id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}parlamentares/parlamentar/${params.id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data) return data
+      if (data)
+        return data
       else return null
-
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async sessao(id: number) {
-    if (typeof id === 'undefined') return null
+    if (typeof id === 'undefined')
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-      const  data: any = await $fetch(
-        `${this.config.public["saplUrl"]}sessao-plenaria/${id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}sessao-plenaria/${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data) return data
+      if (data)
+        return data
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
+
   async materiaSessao(id: number) {
-    if (typeof id === 'undefined') return null
+    if (typeof id === 'undefined')
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-      const  data: any = await $fetch(
-        `${this.config.public["saplUrl"]}materia/materialegislativa/${id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}materia/materialegislativa/${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data) return data
+      if (data)
+        return data
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
-  async sessaoType(id: number) {
-    if (typeof id === 'undefined') return null
-    try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
 
-      const  data: any = await $fetch(
-        `${this.config.public["saplUrl"]}sessao/tiposessaoplenaria/${id}`,
+  async sessaoType(id: number) {
+    if (typeof id === 'undefined')
+      return null
+    try {
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}sessao/tiposessaoplenaria/${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (data?.id) return data
+      if (data?.id)
+        return data
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async expedienteSessão(id: number) {
-    if (!id) return null
+    if (!id)
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-      const data: any  = await $fetch(
-        `${this.config.public["saplUrl"]}sessao/expedientemateria?sessao_plenaria=${id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}sessao/expedientemateria?sessao_plenaria=${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (!data.results[0]) return null
-      
-      const expedientOpen = data.results?.find((elem:any) => {
-        return elem.votacao_aberta == true
+      if (!data.results[0])
+        return null
+
+      const expedientOpen = data.results?.find((elem: any) => {
+        return elem.votacao_aberta === true
       })
-      
-      if(expedientOpen) return expedientOpen
+
+      if (expedientOpen)
+        return expedientOpen
       else return data.results.pop()
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async dayOrderSessão(id: number) {
-    if (!id) return null
+    if (!id)
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-      const data: any  = await $fetch(
-        `${this.config.public["saplUrl"]}sessao/ordemdia?sessao_plenaria=${id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}sessao/ordemdia?sessao_plenaria=${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      if (!data.results[0]) return null
-      
-      const expedientOpen = data.results?.find((elem:any) => {
-        return elem.votacao_aberta == true
+      if (!data.results[0])
+        return null
+
+      const expedientOpen = data.results?.find((elem: any) => {
+        return elem.votacao_aberta === true
       })
-      
-      if(expedientOpen) return expedientOpen
+
+      if (expedientOpen)
+        return expedientOpen
       else return data.results.pop()
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async filicaoParlamentar(id: number, sigla?: boolean) {
-    if (typeof id === 'undefined') return null
+    if (typeof id === 'undefined')
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-      const  data: any = await $fetch(
-        `${this.config.public["saplUrl"]}parlamentares/filiacao?parlamentar=${id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}parlamentares/filiacao?parlamentar=${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
 
-      if(!data.results[0]?.partido) return null
+      if (!data.results[0]?.partido)
+        return null
 
       const party: any = await $fetch(
-        `${this.config.public["saplUrl"]}parlamentares/partido/${data.results[0]?.partido}`,
+        `${this.config.public.saplUrl}parlamentares/partido/${data.results[0]?.partido}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
 
-      if(!data) return null
-      if(sigla) return party?.sigla
-      if (party) return party
+      if (!data)
+        return null
+      if (sigla)
+        return party?.sigla
+      if (party)
+        return party
       else return null
-
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
       return null
     }
   }
 
-  async  politycalParty(id:number) {
-    if (typeof id === 'undefined') return null
+  async politycalParty(id: number) {
+    if (typeof id === 'undefined')
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-      const  data: any = await $fetch(
-        `${this.config.public["saplUrl"]}parlamentares/partido/${id}`,
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}parlamentares/partido/${id}`,
         {
-          headers: headers
-        }
+          headers,
+        },
       )
-      
-      if (data?.id) return data
+
+      if (data?.id)
+        return data
       else return null
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
-  async votosSessao(params: {exp: number, order: boolean}) {
+  async votosSessao(params: { exp: number; order: boolean }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
-      if(params.order) {
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      if (params.order) {
         const data: any = await $fetch(
-          `${this.config.public["saplUrl"]}sessao/votoparlamentar?ordem=${params.exp}`,
-          { headers: headers}
+          `${this.config.public.saplUrl}sessao/votoparlamentar?ordem=${params.exp}`,
+          { headers },
         )
 
-        if(!data.pagination) return []
-        
-        return data.results.filter((elem:any) => elem.voto != "Não Votou")
+        if (!data?.pagination)
+          return null
+        return data.results.filter((elem: any) => elem.voto !== 'Não Votou')
       }
 
-
       const data: any = await $fetch(
-            `${this.config.public["saplUrl"]}sessao/votoparlamentar?expediente=${params.exp}`,
-            { headers: headers}
-          )
-      
-      if(!data.pagination) return []
-      
-      return data.results.filter((elem:any) => elem.voto != "Não Votou")
-    } catch (e) {
+        `${this.config.public.saplUrl}sessao/votoparlamentar?expediente=${params.exp}`,
+        { headers },
+      )
+
+      if (!data?.pagination)
+        return null
+
+      return data.results.filter((elem: any) => elem.voto !== 'Não Votou')
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async registroVotacao(expedientTime: any) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
-      
-        const data: any = await $fetch(
-          `${this.config.public["saplUrl"]}sessao/registrovotacao?data_hora__date=${this.utils.AmericanDateToday()}`,
-          { headers: headers}
-      )     
-      
-      if(!expedientTime || expedientTime == "") return data.results.pop()
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
-    if(!data.pagination) return null
+      const data: any = await $fetch(
+        `${this.config.public.saplUrl}sessao/registrovotacao?data_hora__date=${this.utils.AmericanDateToday()}`,
+        { headers },
+      )
 
-          const register = data.results.filter((elem: any) => {
-            const minTime = Date.parse(elem.data_hora)
+      if (!expedientTime || expedientTime === '')
+        return data.results.pop()
 
-            return minTime > expedientTime
-          })
+      if (!data.pagination)
+        return null
 
-          return register.pop()
-    } catch (e) {
+      const register = data.results.filter((elem: any) => {
+        const minTime = Date.parse(elem.data_hora)
+
+        return minTime > expedientTime
+      })
+
+      return register.pop()
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
-  async orgaoAuthor(params: {id: number, atualizar?: boolean}) {
-    if(!params.id) return null
+  async orgaoAuthor(params: { id: number; atualizar?: boolean }) {
+    if (!params.id)
+      return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
       const data: any = await $fetch(
-            `${this.config.public["saplUrl"]}materia/orgao/${params.id}`,
-            { headers: headers, retry: 3 }
-          )
+        `${this.config.public.saplUrl}materia/orgao/${params.id}`,
+        { headers, retry: 3 },
+      )
 
-      if(data?.id) return null
+      if (data?.id)
+        return null
 
       const retorno = data
 
       return retorno
-      
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
   async registerRead(idExpediente: number) {
-
-    if(!idExpediente) return null
+    if (!idExpediente)
+      return null
 
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
       const data: any = await $fetch(
-            `${this.config.public["saplUrl"]}sessao/registroleitura?expediente=${idExpediente}`,
-            { headers: headers, retry: 3 }
-          )
+        `${this.config.public.saplUrl}sessao/registroleitura?expediente=${idExpediente}`,
+        { headers, retry: 3 },
+      )
 
-      if(!data.pagination) return null
+      if (!data.pagination)
+        return null
 
       const retorno = data.results[0]
 
       return retorno
-      
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
-  async tiporesultadovotacao(id: number){
+  async tiporesultadovotacao(id: number) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
       const data: any = await $fetch(
-            `${this.config.public["saplUrl"]}sessao/tiporesultadovotacao/${id}`,
-            { headers: headers, retry: 3 }
-          )
+        `${this.config.public.saplUrl}sessao/tiporesultadovotacao/${id}`,
+        { headers, retry: 3 },
+      )
 
       const retorno = data
 
       return retorno
-      
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }
 
-  async authorMaterial(authorsMaterial: Array<Number>) {
-    if(!authorsMaterial) return null
-    
+  async authorMaterial(authorsMaterial: Array<number>) {
+    if (!authorsMaterial)
+      return null
+
     const authors = []
-    const poder = ref("")
-    for(const authorId of authorsMaterial) {
+    const poder = ref('')
+    for (const authorId of authorsMaterial) {
       try {
-        const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+        const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
 
         const data: any = await $fetch(
-              `${this.config.public["saplUrl"]}base/autor/${authorId}`,
-              { headers: headers }
-            )
-          
-        if(!data?.id) break
-  
-        if(data?.tipo != 2 && data?.tipo != 7) authors.push(data)
+          `${this.config.public.saplUrl}base/autor/${authorId}`,
+          { headers },
+        )
 
-        if(data?.tipo == 2) {
+        if (!data?.id)
+          break
 
-          const parlamentar = await this.getParlamentar({id: data?.autor_related.value, all: false})
+        if (data?.tipo !== 2 && data?.tipo !== 7)
+          authors.push(data)
+
+        if (data?.tipo === 2) {
+          const parlamentar = await this.getParlamentar({ id: data?.autor_related.value, all: false })
           const party = await this.filicaoParlamentar(parlamentar?.id)
 
-            if(parlamentar) authors.push({nome: parlamentar?.nome_completo, party: party? party?.sigla : undefined})
-            
-            if(!data) return null
+          if (parlamentar)
+            authors.push({ nome: parlamentar?.nome_completo, party: party ? party?.sigla : undefined })
 
+          if (!data)
+            return null
         }
 
-        if(data?.tipo == 7) {
-
+        if (data?.tipo === 7) {
           authors.push(data)
-          poder.value = "Poder Executivo"
+          poder.value = 'Poder Executivo'
         }
-        
-      } catch (e) {
+      }
+      catch (e) {
         console.log(e)
       }
     }
-    
-    if(authors.length == 0) return {authors: [], poder: undefined}
-    return {authors, poder}
+
+    if (authors.length === 0)
+      return { authors: [], poder: undefined }
+    return { authors, poder }
   }
 
   async tipoMateria(id: number) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public["saplToken"]}` }
+      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
       const data: any = await $fetch(
-            `${this.config.public["saplUrl"]}materia/tipomaterialegislativa/${id}`,
-            { headers: headers }
-          )
+        `${this.config.public.saplUrl}materia/tipomaterialegislativa/${id}`,
+        { headers },
+      )
 
-      if(!data) return null
+      if (!data)
+        return null
 
       const retorno = data.__str__
 
       return retorno
-      
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e)
     }
   }

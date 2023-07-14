@@ -8,7 +8,8 @@
         ".output/**",
         ".histoire/**",
         "**/.vitepress/dist/**"
-      ]
+      ],
+      "dotEnv": [".env"]
     },
     "lint": {
       "outputs": []
@@ -17,10 +18,12 @@
       "outputs": []
     },
     "dev": {
+      "dotEnv": [".env"],
       "cache": false
     },
     "test": {
-      "outputs": []
+      "outputs": [],
+      "dotEnv": [".env"]
     }
   }
 }
