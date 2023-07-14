@@ -1,4 +1,8 @@
 class Utilities {
+  isEqual(obj1: any, obj2: any) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2)
+  }
+
   format(datef: Date) {
     if (datef instanceof Date)
       return new Intl.DateTimeFormat('pt-BR').format(datef)
