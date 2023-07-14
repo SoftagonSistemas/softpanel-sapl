@@ -14,7 +14,8 @@ const { data, refresh, pending } = await useAsyncData(async () => {
     apiSPL.dayOrderSessão(sessaoToday?.id),
   ])
 
-  const { expediente, treatingTimeExpedienteRead, treatingRegistroExpediente } = await treatingExpedientAndResult(expedienteResult, oldExp, timeExpedienteRead, ScreenShow.value)
+  const treating = new TreatingExpedient(expedienteResult, oldExp, timeExpedienteRead, ScreenShow.value)
+  const { expediente, treatingTimeExpedienteRead, treatingRegistroExpediente } = await treating.treatingExpedientAndResult()
 
   const registroExpediente = treatingRegistroExpediente
   oldExp.value = expediente
@@ -55,21 +56,14 @@ watch(sessaoToday, () => {
         Sessão em andamento!
       </div>
 
-      <Proposition
-        v-if="ScreenShow.screen === 'ShowMaterial'"
-        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
-      />
+      <Proposition v-if="ScreenShow.screen === 'ShowMaterial'"
+        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay" />
 
-      <Voting
-        v-if="ScreenShow.screen === 'VotationOpen'" status="discussao" :sessao="sessaoToday"
-        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay" :order-day="ScreenShow.scenario"
-      />
+      <Voting v-if="ScreenShow.screen === 'VotationOpen'" status="discussao" :sessao="sessaoToday"
+        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay" :order-day="ScreenShow.scenario" />
 
-      <VotingResults
-        v-if="ScreenShow.screen === 'PollResult'" :result="registro"
-        :registro="registro" :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
-        :sessao="sessaoToday"
-      />
+      <VotingResults v-if="ScreenShow.screen === 'PollResult'" :result="registro" :registro="registro"
+        :expediente="ScreenShow.scenario === 1 ? expediente : orderDay" :sessao="sessaoToday" />
     </div>
     <Footer-index />
   </div>
