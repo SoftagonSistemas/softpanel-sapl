@@ -60,7 +60,7 @@ const voteconfig = computed(() => {
             <div class="d-flex">
               <div class="bg-grey-lighten-4 d-flex justify-center align-center pa-3">
                 <div v-if="!logoPartido">
-                  <p>{{ party?.sigla || "S/n"}}</p>
+                  <p>{{ party?.sigla || "S/n" }}</p>
                 </div>
                 <div v-else>
                   <v-img width="50" :src="logoPartido || ''" />
