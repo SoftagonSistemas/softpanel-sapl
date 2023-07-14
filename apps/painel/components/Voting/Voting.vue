@@ -27,7 +27,6 @@ const existVotes = computed(() => {
 
 const watchVotes = setInterval(async () => {
   presenca.value = data.value
-  console.log(existVotes)
   exp.value = props.expediente
 
   if (!pending.value) {

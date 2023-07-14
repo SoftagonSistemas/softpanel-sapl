@@ -60,7 +60,7 @@ const voteconfig = computed(() => {
             <div class="d-flex">
               <div class="bg-grey-lighten-4 d-flex justify-center align-center pa-3">
                 <div v-if="!logoPartido">
-                  <p>{{ party?.sigla || '' }}</p>
+                  <p>{{ party?.sigla || "S/n"}}</p>
                 </div>
                 <div v-else>
                   <v-img width="50" :src="logoPartido || ''" />
@@ -69,7 +69,7 @@ const voteconfig = computed(() => {
               <div class="w-50 bg-grey-lighten-4 border-radius">
                 <p class="bg-grey-darken-1 text-h6 text-uppercase text-center pa-2 font-weight-bold">
                   {{
-                    party.sigla }}
+                    party?.sigla || "S/n" }}
                 </p>
                 <p class="text-h5 vote-border pa-3 rounded-be-xl" :style="{ borderColor: voteconfig?.color }">
                   {{

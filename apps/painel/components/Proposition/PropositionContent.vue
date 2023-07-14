@@ -50,8 +50,8 @@ watch(() => props.proposition, () => {
           </div>
         </div>
       </div>
-      <v-col cols="12" sm="12" md="8" lg="6" class="d-flex flex-column">
-        <div class="bg-yellow-darken-2 pa-4 mt-12 mb-1 text-center font-weight-bold text-h5">
+      <v-col cols="12" sm="12" md="8" lg="6" class="d-flex flex-column pl-0">
+        <div class="bg-yellow-darken-2  pa-4 mt-12 mb-1 text-center font-weight-bold text-h5">
           {{ props.proposition.VoteTipe }}
         </div>
         <div class="bg-yellow-darken-2 pa-4">
