@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "globalEnv": ["saplUrl", "saplToken"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
@@ -9,21 +10,23 @@
         ".histoire/**",
         "**/.vitepress/dist/**"
       ],
-      "dotEnv": [".env"]
+      "env": ["saplToken", "saplUrl"]
     },
     "lint": {
-      "outputs": []
+      "outputs": [],
+      "env": ["saplToken", "saplUrl"]
     },
     "lint:fix": {
-      "outputs": []
+      "outputs": [],
+      "env": ["saplToken", "saplUrl"]
     },
     "dev": {
-      "dotEnv": [".env"],
+      "env": ["saplToken", "saplUrl"],
       "cache": false
     },
     "test": {
       "outputs": [],
-      "dotEnv": [".env"]
+      "env": ["saplToken", "saplUrl"]
     }
   }
 }

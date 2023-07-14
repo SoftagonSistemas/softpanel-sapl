@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "lint": "npx eslint .",
+    "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
     "build": "nuxt build",
     "dev": "nuxt dev",
