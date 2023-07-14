@@ -43,7 +43,8 @@ setInterval(async () => {
 }, 4000)
 
 watch(sessaoToday, () => {
-  ScreenShow.value = changeScreen(contextConfig(sessaoToday.value, expediente.value, registro.value, orderDay.value), ScreenShow.value)
+  const ScreenController = new ScreensShow(sessaoToday.value, expediente.value, registro.value, orderDay.value)
+  ScreenShow.value = ScreenController.changeScreen()
 })
 </script>
 
