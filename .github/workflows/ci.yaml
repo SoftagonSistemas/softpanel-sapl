@@ -34,6 +34,9 @@ jobs:
 
       - name: Setup
         uses: ./.github/workflows/setup
+        
+      - name: Update
+        run: pnpm update
 
       - name: Build
         run: pnpm build
