@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "es2022",
+    "esModuleInterop": true,
+    "preserveConstEnums": true,
+    "moduleResolution": "Node",
+    "strict": true,
+    "sourceMap": true,
+    "target": "es2017"
+  },
+  // https://v3.nuxtjs.org/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
+}
