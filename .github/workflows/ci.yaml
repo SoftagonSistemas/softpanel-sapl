@@ -85,7 +85,7 @@ jobs:
 
     environment:
       name: Docs (main)
-      url: https://turborepo-nuxt-boilerplate-docs-main.netlify.app/
+      url: https://painel-sapl.netlify.app/
 
     steps:
       - uses: actions/cache@v3
@@ -109,7 +109,7 @@ jobs:
 
     environment:
       name: Web (main)
-      url: https://turborepo-nuxt-boilerplate-web-main.netlify.app/
+      url: https://painel-sapl.netlify.app/
 
     steps:
       - uses: actions/cache@v3
@@ -144,7 +144,7 @@ jobs:
 
     environment:
       name: UI (main)
-      url: https://turborepo-nuxt-boilerplate-ui-main.netlify.app/
+      url: https://painel-sapl.netlify.app/
 
     steps:
       - uses: actions/cache@v3
