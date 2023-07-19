@@ -20,6 +20,18 @@
         "saplUrl"
       ]
     },
+    "generate": {
+      "outputs": [
+        "dist/**",
+        ".output/**",
+        ".histoire/**",
+        "**/.vitepress/dist/**"
+      ],
+      "env": [
+        "saplToken",
+        "saplUrl"
+      ]
+    },
     "lint": {
       "outputs": [],
       "env": [
