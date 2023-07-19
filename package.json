@@ -2,10 +2,6 @@
   "name": "painel-sapl",
   "version": "0.0.5",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "dotenv -- turbo run dev --parallel",
