@@ -1,7 +1,6 @@
 export default defineNuxtConfig({
-  modules: ['@myturborepo/ui'],
   nitro: {
-    preset: 'netlify',
+    preset: 'cloudflare-pages',
   },
   runtimeConfig: {
     public: {

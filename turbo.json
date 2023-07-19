@@ -1,32 +1,52 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalEnv": ["saplUrl", "saplToken"],
+  "globalEnv": [
+    "saplUrl",
+    "saplToken"
+  ],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "outputs": [
         "dist/**",
         ".output/**",
         ".histoire/**",
         "**/.vitepress/dist/**"
       ],
-      "env": ["saplToken", "saplUrl"]
+      "env": [
+        "saplToken",
+        "saplUrl"
+      ]
     },
     "lint": {
       "outputs": [],
-      "env": ["saplToken", "saplUrl"]
+      "env": [
+        "saplToken",
+        "saplUrl"
+      ]
     },
     "lint:fix": {
       "outputs": [],
-      "env": ["saplToken", "saplUrl"]
+      "env": [
+        "saplToken",
+        "saplUrl"
+      ]
     },
     "dev": {
-      "env": ["saplToken", "saplUrl"],
+      "env": [
+        "saplToken",
+        "saplUrl"
+      ],
       "cache": false
     },
     "test": {
       "outputs": [],
-      "env": ["saplToken", "saplUrl"]
+      "env": [
+        "saplToken",
+        "saplUrl"
+      ]
     }
   }
 }
