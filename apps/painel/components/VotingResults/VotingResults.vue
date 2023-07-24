@@ -58,7 +58,7 @@ const headerContent = computed(() => {
 
 <template>
     <div id="results-screen">
-        <Header :content="headerContent" />
+        <HeaderPanel :content="headerContent" />
         <VotingResultsNumbers
             :expedient="expedient"
             :registro="registro"

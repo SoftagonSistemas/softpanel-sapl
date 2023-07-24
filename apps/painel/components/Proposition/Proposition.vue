@@ -72,7 +72,7 @@ const headerContent = computed(() => {
 
 <template>
     <div id="proposition-screen">
-        <Header :content="headerContent" />
+        <HeaderPanel :content="headerContent" />
         <PropositionContent :proposition="proposition" />
     </div>
 </template>

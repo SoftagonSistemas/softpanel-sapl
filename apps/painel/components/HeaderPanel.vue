@@ -1,16 +1,23 @@
 <script setup lang="ts">
-const props = defineProps(['content'])
+interface Props {
+    bill?: string
+    poder?: string
+    status?: string
+    section?: string
+}
+const props = defineProps<Props>()
+
 const apiSAPL = new UseSessaoPlenaria()
 
 const casa = await useAsyncData(async () => {
     return await apiSAPL.legislativeHouse()
 })
-const data = ref(props.content)
+const data = ref(props)
 
 watch(
-    () => props.content,
+    () => props,
     () => {
-        data.value = props.content
+        data.value = props
     }
 )
 

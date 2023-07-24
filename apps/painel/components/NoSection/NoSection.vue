@@ -30,7 +30,7 @@ const headerContent = computed(() => {
 
 <template>
     <div id="no-section-screen">
-        <Header :content="headerContent" />
+        <HeaderPanel :content="headerContent" />
         <v-row class="text-grey-lighten-5 mt-5">
             <v-col cols="12">
                 <NoSectionOldSections
