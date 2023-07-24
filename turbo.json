@@ -1,64 +1,41 @@
 {
-  "$schema": "https://turborepo.org/schema.json",
-  "globalEnv": [
-    "saplUrl",
-    "saplToken"
-  ],
-  "pipeline": {
-    "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**",
-        ".output/**",
-        ".histoire/**",
-        "**/.vitepress/dist/**"
-      ],
-      "env": [
-        "saplToken",
-        "saplUrl"
-      ]
-    },
-    "generate": {
-      "outputs": [
-        "dist/**",
-        ".output/**",
-        ".histoire/**",
-        "**/.vitepress/dist/**"
-      ],
-      "env": [
-        "saplToken",
-        "saplUrl"
-      ]
-    },
-    "lint": {
-      "outputs": [],
-      "env": [
-        "saplToken",
-        "saplUrl"
-      ]
-    },
-    "lint:fix": {
-      "outputs": [],
-      "env": [
-        "saplToken",
-        "saplUrl"
-      ]
-    },
-    "dev": {
-      "env": [
-        "saplToken",
-        "saplUrl"
-      ],
-      "cache": false
-    },
-    "test": {
-      "outputs": [],
-      "env": [
-        "saplToken",
-        "saplUrl"
-      ]
+    "$schema": "https://turborepo.org/schema.json",
+    "globalEnv": ["SAPL_URL", "SAPL_TOKEN"],
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": [
+                "dist/**",
+                ".output/**",
+                ".histoire/**",
+                "**/.vitepress/dist/**"
+            ],
+            "env": ["SAPL_TOKEN", "SAPL_URL"]
+        },
+        "generate": {
+            "outputs": [
+                "dist/**",
+                ".output/**",
+                ".histoire/**",
+                "**/.vitepress/dist/**"
+            ],
+            "env": ["SAPL_TOKEN", "SAPL_URL"]
+        },
+        "lint": {
+            "outputs": [],
+            "env": ["SAPL_TOKEN", "SAPL_URL"]
+        },
+        "lint:fix": {
+            "outputs": [],
+            "env": ["SAPL_TOKEN", "SAPL_URL"]
+        },
+        "dev": {
+            "env": ["SAPL_TOKEN", "SAPL_URL"],
+            "cache": false
+        },
+        "test": {
+            "outputs": [],
+            "env": ["SAPL_TOKEN", "SAPL_URL"]
+        }
     }
-  }
 }

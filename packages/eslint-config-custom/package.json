@@ -1,17 +1,24 @@
 {
-  "name": "@myturborepo/eslint-config-custom",
-  "version": "0.0.0",
-  "main": "index.js",
-  "private": true,
-  "dependencies": {
-    "@antfu/eslint-config": "^0.39.7",
-    "eslint": "^8.44.0",
-    "eslint-config-turbo": "latest"
-  },
-  "devDependencies": {
-    "typescript": "^5.1.6"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@softpanel/eslint-config-custom",
+    "version": "0.0.1",
+    "main": "index.js",
+    "private": true,
+    "dependencies": {
+        "eslint": "^8.45.0",
+        "eslint-config-turbo": "latest"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^6.1.0",
+        "@typescript-eslint/parser": "^6.1.0",
+        "@vue/eslint-config-standard": "^8.0.1",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-nuxt": "^4.0.0",
+        "eslint-plugin-prettier": "^5.0.0",
+        "prettier": "3.0.0",
+        "turbo": "^1.10.9",
+        "typescript": "^5.1.6"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }
