@@ -1,27 +1,28 @@
 {
-  "name": "painel-sapl",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "lint": "eslint .",
-    "lintfix": "npm run lint -- --fix",
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview"
-  },
-  "dependencies": {
-    "sass": "^1.64.1",
-    "vuetify": "^3.3.9"
-  },
-  "devDependencies": {
-    "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.1.0",
-    "@typescript-eslint/parser": "^6.1.0",
-    "@vue/eslint-config-prettier": "^8.0.0",
-    "nuxt": "^3.6.5",
-    "prettier": "3.0.0",
-    "vite-plugin-eslint": "^1.8.1",
-    "vue-tsc": "^1.8.6"
-  }
+    "name": "painel-sapl",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "npm run lint -- --fix",
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview"
+    },
+    "dependencies": {
+        "sass": "^1.64.1",
+        "vuetify": "^3.3.9"
+    },
+    "devDependencies": {
+        "@nuxtjs/eslint-config-typescript": "^12.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.1.0",
+        "@typescript-eslint/parser": "^6.1.0",
+        "@vue/eslint-config-prettier": "^8.0.0",
+        "nuxt": "^3.6.5",
+        "prettier": "3.0.0",
+        "vite-plugin-eslint": "^1.8.1",
+        "vue-tsc": "^1.8.6",
+        "vuetify-nuxt-module": "^0.5.3"
+    }
 }

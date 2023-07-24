@@ -1,52 +1,76 @@
 class TreatingData {
-  apiSPL = new UseSessaoPlenaria()
+    apiSAPL = new UseSessaoPlenaria()
 
-  constructor(private expediente: any, private expedienteCurrent: any, private timeExpedienteRead: any, private ScreenShow: any) { }
+    constructor(
+        private expedient: any,
+        private expedientCurrent: any,
+        private timeExpedienteRead: any,
+        private ScreenShow: any
+    ) {}
 
-  async treatingExpedientAndResult() {
-    this.expedienteCurrent.value = !this.expedienteCurrent.value ? this.expediente : this.expedienteCurrent.value
+    async treatingExpedientAndResult() {
+        this.expedientCurrent.value = !this.expedientCurrent.value
+            ? this.expedient
+            : this.expedientCurrent.value
 
-    if (this.expedienteCurrent.value && this.expediente?.votacao_aberta) {
-      if (this.expedienteCurrent.value?.id !== this.expediente?.id)
-        this.expedienteCurrent.value = this.expediente
+        if (this.expedientCurrent.value && this.expedient?.votacao_aberta) {
+            if (this.expedientCurrent.value?.id !== this.expedient?.id)
+                this.expedientCurrent.value = this.expedient
 
-      if (this.expedienteCurrent.value?.id === this.expediente?.id && !this.expedienteCurrent.value?.votacao_aberta && this.expediente?.votacao_aberta)
-        this.expedienteCurrent.value = this.expediente
+            if (
+                this.expedientCurrent.value?.id === this.expedient?.id &&
+                !this.expedientCurrent.value?.votacao_aberta &&
+                this.expedient?.votacao_aberta
+            )
+                this.expedientCurrent.value = this.expedient
 
-      if (!this.expedienteCurrent.value?.timed) {
-        this.expedienteCurrent.value.timed = true
-        this.timeExpedienteRead.value = Date.now()
-      }
+            if (!this.expedientCurrent.value?.timed) {
+                this.expedientCurrent.value.timed = true
+                this.timeExpedienteRead.value = Date.now()
+            }
+        }
+
+        const resultReadExpediente = await this.apiSAPL.registerRead(
+            this.expedientCurrent.value?.id
+        )
+
+        if (this.expedientCurrent.value?.id)
+            this.expedientCurrent.value.resultado = resultReadExpediente?.id
+                ? 'Matéria lida'
+                : ''
+
+        if (
+            !this.timeExpedienteRead.value &&
+            this.ScreenShow.screen === 'ShowMaterial'
+        )
+            this.timeExpedienteRead.value =
+                this.expedientCurrent.value?.resultado !== ''
+                    ? Date.now()
+                    : null
+
+        const dataExpedient = ref(
+            await this.apiSAPL.registroVotacao(this.timeExpedienteRead.value)
+        )
+
+        if (resultReadExpediente?.id) {
+            const registerExist = await this.apiSAPL.registroVotacao(
+                Date.parse(resultReadExpediente.data_hora)
+            )
+
+            if (registerExist?.id) dataExpedient.value = registerExist
+            else dataExpedient.value = null
+        }
+
+        if (dataExpedient.value?.id) {
+            this.timeExpedienteRead.value = null
+            this.expedientCurrent.value.votacao_aberta = false
+        }
+        return {
+            expedient: this.expedientCurrent.value,
+            treatingTimeExpedienteRead: this.timeExpedienteRead.value,
+            treatingRegistroExpediente: dataExpedient.value,
+        }
     }
-
-    const resultReadExpediente = await this.apiSPL.registerRead(this.expedienteCurrent.value?.id)
-
-    if (this.expedienteCurrent.value?.id)
-      this.expedienteCurrent.value.resultado = resultReadExpediente?.id ? 'Matéria lida' : ''
-
-    if (!this.timeExpedienteRead.value && this.ScreenShow.screen === 'ShowMaterial')
-      this.timeExpedienteRead.value = this.expedienteCurrent.value?.resultado !== '' ? Date.now() : null
-
-    const registroExpediente = ref(await this.apiSPL.registroVotacao(this.timeExpedienteRead.value))
-
-    if (resultReadExpediente?.id) {
-      const registerExist = await this.apiSPL.registroVotacao(Date.parse(resultReadExpediente.data_hora))
-
-      if (registerExist?.id)
-        registroExpediente.value = registerExist
-      else registroExpediente.value = null
-    }
-
-    if (registroExpediente.value?.id) {
-      this.timeExpedienteRead.value = null
-      this.expedienteCurrent.value.votacao_aberta = false
-    }
-    return {
-      expediente: this.expedienteCurrent.value,
-      treatingTimeExpedienteRead: this.timeExpedienteRead.value,
-      treatingRegistroExpediente: registroExpediente.value,
-    }
-  }
 }
 
 export default TreatingData

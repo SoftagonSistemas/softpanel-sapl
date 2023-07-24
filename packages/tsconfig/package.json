@@ -1,9 +1,9 @@
 {
-  "name": "@myturborepo/tsconfig",
-  "version": "0.0.0",
-  "private": true,
-  "files": [
-    "base.json",
-    "histoire.json"
-  ]
+    "name": "@softpanel/tsconfig",
+    "version": "0.0.1",
+    "private": true,
+    "files": [
+        "base.json",
+        "histoire.json"
+    ]
 }
