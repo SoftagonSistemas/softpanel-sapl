@@ -11,17 +11,17 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "sass": "^1.63.6",
+    "sass": "^1.64.1",
     "vuetify": "^3.3.9"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
-    "@vue/eslint-config-prettier": "^7.1.0",
-    "nuxt": "^3.6.4",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "nuxt": "^3.6.5",
     "prettier": "3.0.0",
     "vite-plugin-eslint": "^1.8.1",
-    "vue-tsc": "^1.8.5"
+    "vue-tsc": "^1.8.6"
   }
 }
