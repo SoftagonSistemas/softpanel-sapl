@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-    bill?: string
+    bill: string
     poder?: string
     status?: string
     section?: string

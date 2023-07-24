@@ -1,4 +1,3 @@
-
 export default defineNuxtConfig({
     nitro: {
         preset: 'cloudflare-pages',
@@ -9,9 +8,7 @@ export default defineNuxtConfig({
             SAPL_TOKEN: process.env.SAPL_TOKEN,
         },
     },
-    modules: [
-        'vuetify-nuxt-module'
-    ],
+    modules: ['vuetify-nuxt-module'],
     vuetify: {
         vuetifyOptions: {
             theme: {
@@ -63,10 +60,7 @@ export default defineNuxtConfig({
             },
             charset: 'utf-8',
             viewport: 'width=device-width, initial-scale=1',
-            link: [
-                { rel: 'icon', type: 'image/png', href: '/softagon.png' },
-            ],
+            link: [{ rel: 'icon', type: 'image/png', href: '/softagon.png' }],
         },
     },
-
 })

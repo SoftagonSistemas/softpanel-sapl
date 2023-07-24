@@ -6,7 +6,7 @@ class TreatingData {
         private expedientCurrent: any,
         private timeExpedienteRead: any,
         private ScreenShow: any
-    ) { }
+    ) {}
 
     async treatingExpedientAndResult() {
         this.expedientCurrent.value = !this.expedientCurrent.value

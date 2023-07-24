@@ -103,7 +103,10 @@ class SessaoPlenaria {
         }
     }
 
-    async plenarySessionAttendance(params: { id?: number; atualizar?: boolean }) {
+    async plenarySessionAttendance(params: {
+        id?: number
+        atualizar?: boolean
+    }) {
         try {
             const headers = {
                 Authorization: `Bearer ${this.config.public.SAPL_TOKEN}`,
@@ -380,7 +383,8 @@ class SessaoPlenaria {
             }
 
             const data: any = await $fetch(
-                `${this.config.public.SAPL_URL
+                `${
+                    this.config.public.SAPL_URL
                 }sessao/registrovotacao?data_hora__date=${this.utils.AmericanDateToday()}`,
                 { headers }
             )
