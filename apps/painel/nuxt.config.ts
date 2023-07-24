@@ -4,8 +4,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      saplUrl: process.env.saplUrl,
-      saplToken: process.env.saplToken,
+      SAPL_URL: process.env.SAPL_URL,
+      SAPL_TOKEN: process.env.SAPL_TOKEN,
     },
   },
   css: ['vuetify/styles/main.sass'],

@@ -11,12 +11,12 @@ class SessaoPlenaria {
    */
   async sessaoPlenaria(params: { id?: number; hoje?: string; oldSections?: boolean; page?: number }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       if (params.oldSections) {
         params.page = !params.page ? 1 : params.page
         const data: any = await $fetch(
-          `${this.config.public.saplUrl}sessao/sessaoplenaria?finalizada__istartswith=true&page=${params.page}`,
+          `${this.config.public.SAPL_URL}sessao/sessaoplenaria?finalizada__istartswith=true&page=${params.page}`,
           {
             headers,
           },
@@ -28,7 +28,7 @@ class SessaoPlenaria {
       }
       if (params.hoje) {
         const data: any = await $fetch(
-          `${this.config.public.saplUrl}sessao/sessaoplenaria/?data_inicio=${params.hoje}`,
+          `${this.config.public.SAPL_URL}sessao/sessaoplenaria/?data_inicio=${params.hoje}`,
           {
             headers,
           },
@@ -39,7 +39,7 @@ class SessaoPlenaria {
       }
       if (params.id) {
         const data: any = await $fetch(
-          `${this.config.public.saplUrl}sessao/sessaoplenaria/${params.id}`,
+          `${this.config.public.SAPL_URL}sessao/sessaoplenaria/${params.id}`,
           {
             headers,
           },
@@ -48,7 +48,7 @@ class SessaoPlenaria {
         return data
       }
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao-plenaria`,
+        `${this.config.public.SAPL_URL}sessao-plenaria`,
         {
           headers,
         },
@@ -64,10 +64,10 @@ class SessaoPlenaria {
 
   async casalegislativa(params = { id: 1 }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}base/casalegislativa/${params.id}`,
+        `${this.config.public.SAPL_URL}base/casalegislativa/${params.id}`,
         {
           headers,
         },
@@ -83,10 +83,10 @@ class SessaoPlenaria {
 
   async expedientes(params: any) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/sessaoplenaria/${params.id}/expedientes/`,
+        `${this.config.public.SAPL_URL}sessao/sessaoplenaria/${params.id}/expedientes/`,
         {
           headers,
         },
@@ -102,12 +102,12 @@ class SessaoPlenaria {
 
   async sessaoPlenariaPresenca(params: { id?: number; atualizar?: boolean }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       const data: any = await useAsyncData(
         'parla',
         () =>
           $fetch(
-            `${this.config.public.saplUrl}sessao/sessaoplenariapresenca?sessao_plenaria=${params.id}`,
+            `${this.config.public.SAPL_URL}sessao/sessaoplenariapresenca?sessao_plenaria=${params.id}`,
             { headers, retry: 3 },
           ),
       )
@@ -117,7 +117,7 @@ class SessaoPlenaria {
         retorno.map(async (r: any, i: number, x: any) => {
           if (r.parlamentar) {
             const parlamentar: any = await $fetch(
-              `${this.config.public.saplUrl}parlamentares/parlamentar/${r.parlamentar}`,
+              `${this.config.public.SAPL_URL}parlamentares/parlamentar/${r.parlamentar}`,
               {
                 headers,
               },
@@ -136,11 +136,11 @@ class SessaoPlenaria {
 
   async getParlamentar(params: { id?: number; all: boolean; page?: number }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       if (params.all) {
         params.page = !params.page ? 1 : params.page
         const parlamentarys: any = await $fetch(
-          `${this.config.public.saplUrl}parlamentares/parlamentar?page=${params.page}`,
+          `${this.config.public.SAPL_URL}parlamentares/parlamentar?page=${params.page}`,
           {
             headers,
           },
@@ -155,7 +155,7 @@ class SessaoPlenaria {
         return null
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}parlamentares/parlamentar/${params.id}`,
+        `${this.config.public.SAPL_URL}parlamentares/parlamentar/${params.id}`,
         {
           headers,
         },
@@ -173,10 +173,10 @@ class SessaoPlenaria {
     if (typeof id === 'undefined')
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao-plenaria/${id}`,
+        `${this.config.public.SAPL_URL}sessao-plenaria/${id}`,
         {
           headers,
         },
@@ -194,10 +194,10 @@ class SessaoPlenaria {
     if (typeof id === 'undefined')
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}materia/materialegislativa/${id}`,
+        `${this.config.public.SAPL_URL}materia/materialegislativa/${id}`,
         {
           headers,
         },
@@ -215,10 +215,10 @@ class SessaoPlenaria {
     if (typeof id === 'undefined')
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/tiposessaoplenaria/${id}`,
+        `${this.config.public.SAPL_URL}sessao/tiposessaoplenaria/${id}`,
         {
           headers,
         },
@@ -236,10 +236,10 @@ class SessaoPlenaria {
     if (!id)
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/expedientemateria?sessao_plenaria=${id}`,
+        `${this.config.public.SAPL_URL}sessao/expedientemateria?sessao_plenaria=${id}`,
         {
           headers,
         },
@@ -264,10 +264,10 @@ class SessaoPlenaria {
     if (!id)
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/ordemdia?sessao_plenaria=${id}`,
+        `${this.config.public.SAPL_URL}sessao/ordemdia?sessao_plenaria=${id}`,
         {
           headers,
         },
@@ -292,10 +292,10 @@ class SessaoPlenaria {
     if (typeof id === 'undefined')
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}parlamentares/filiacao?parlamentar=${id}`,
+        `${this.config.public.SAPL_URL}parlamentares/filiacao?parlamentar=${id}`,
         {
           headers,
         },
@@ -305,7 +305,7 @@ class SessaoPlenaria {
         return null
 
       const party: any = await $fetch(
-        `${this.config.public.saplUrl}parlamentares/partido/${data.results[0]?.partido}`,
+        `${this.config.public.SAPL_URL}parlamentares/partido/${data.results[0]?.partido}`,
         {
           headers,
         },
@@ -329,10 +329,10 @@ class SessaoPlenaria {
     if (typeof id === 'undefined')
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}parlamentares/partido/${id}`,
+        `${this.config.public.SAPL_URL}parlamentares/partido/${id}`,
         {
           headers,
         },
@@ -349,10 +349,10 @@ class SessaoPlenaria {
 
   async votosSessao(params: { exp: number; order: boolean }) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       if (params.order) {
         const data: any = await $fetch(
-          `${this.config.public.saplUrl}sessao/votoparlamentar?ordem=${params.exp}`,
+          `${this.config.public.SAPL_URL}sessao/votoparlamentar?ordem=${params.exp}`,
           { headers },
         )
 
@@ -362,7 +362,7 @@ class SessaoPlenaria {
       }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/votoparlamentar?expediente=${params.exp}`,
+        `${this.config.public.SAPL_URL}sessao/votoparlamentar?expediente=${params.exp}`,
         { headers },
       )
 
@@ -378,10 +378,10 @@ class SessaoPlenaria {
 
   async registroVotacao(expedientTime: any) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/registrovotacao?data_hora__date=${this.utils.AmericanDateToday()}`,
+        `${this.config.public.SAPL_URL}sessao/registrovotacao?data_hora__date=${this.utils.AmericanDateToday()}`,
         { headers },
       )
 
@@ -408,9 +408,9 @@ class SessaoPlenaria {
     if (!params.id)
       return null
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}materia/orgao/${params.id}`,
+        `${this.config.public.SAPL_URL}materia/orgao/${params.id}`,
         { headers, retry: 3 },
       )
 
@@ -431,9 +431,9 @@ class SessaoPlenaria {
       return null
 
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/registroleitura?expediente=${idExpediente}`,
+        `${this.config.public.SAPL_URL}sessao/registroleitura?expediente=${idExpediente}`,
         { headers, retry: 3 },
       )
 
@@ -451,9 +451,9 @@ class SessaoPlenaria {
 
   async tiporesultadovotacao(id: number) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}sessao/tiporesultadovotacao/${id}`,
+        `${this.config.public.SAPL_URL}sessao/tiporesultadovotacao/${id}`,
         { headers, retry: 3 },
       )
 
@@ -474,10 +474,10 @@ class SessaoPlenaria {
     const poder = ref('')
     for (const authorId of authorsMaterial) {
       try {
-        const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+        const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
 
         const data: any = await $fetch(
-          `${this.config.public.saplUrl}base/autor/${authorId}`,
+          `${this.config.public.SAPL_URL}base/autor/${authorId}`,
           { headers },
         )
 
@@ -515,9 +515,9 @@ class SessaoPlenaria {
 
   async tipoMateria(id: number) {
     try {
-      const headers = { Authorization: `Bearer ${this.config.public.saplToken}` }
+      const headers = { Authorization: `Bearer ${this.config.public.SAPL_TOKEN}` }
       const data: any = await $fetch(
-        `${this.config.public.saplUrl}materia/tipomaterialegislativa/${id}`,
+        `${this.config.public.SAPL_URL}materia/tipomaterialegislativa/${id}`,
         { headers },
       )
 
