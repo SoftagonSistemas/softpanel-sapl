@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const props = defineProps(['expediente'])
+const props = defineProps(['expedient'])
 const utilities = new UseUtils()
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 
 const materia = ref()
 const sessao = ref()
@@ -12,13 +12,13 @@ const { refresh } = await useAsyncData(
     'base',
     async () => {
         const [materiaRes, sessaoRes] = await Promise.all([
-            apiSPL.materiaSessao(props.expediente.materia),
-            apiSPL.sessao(props.expediente.sessao_plenaria),
+            apiSAPL.materiaSessao(props.expedient.materia),
+            apiSAPL.sessao(props.expedient.sessao_plenaria),
         ])
 
         const [authorsRes, tipoMateriaRes] = await Promise.all([
-            apiSPL.authorMaterial(materiaRes.autores),
-            apiSPL.tipoMateria(materiaRes.tipo),
+            apiSAPL.authorMaterial(materiaRes.autores),
+            apiSAPL.tipoMateria(materiaRes.tipo),
         ])
 
         materia.value = materiaRes
@@ -30,7 +30,7 @@ const { refresh } = await useAsyncData(
 )
 
 watch(
-    () => props.expediente?.id,
+    () => props.expedient?.id,
     () => {
         refresh()
     }
@@ -40,7 +40,7 @@ const proposition = computed(() => {
     return {
         parliamentaryName: authors.value?.authors,
 
-        VoteTipe: utilities.typesVotation(props.expediente?.tipo_votacao),
+        VoteTipe: utilities.typesVotation(props.expedient?.tipo_votacao),
         proposicao: utilities.bill(materia.value?.numero, materia.value?.ano),
         bill: `${tipoMateria.value} ${utilities.bill(
             materia.value?.numero,
@@ -62,7 +62,7 @@ const headerContent = computed(() => {
         )}`,
         poder: authors.value?.poder,
         status:
-            props.expediente.resultado === 'Matéria lida'
+            props.expedient.resultado === 'Matéria lida'
                 ? 'materialRead'
                 : 'discussao',
         section: sessao.value.datReuniaoString.slice(0, 10),

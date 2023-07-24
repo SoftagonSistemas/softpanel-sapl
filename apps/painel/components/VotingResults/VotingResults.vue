@@ -1,24 +1,24 @@
 <script setup lang="ts">
-const props = defineProps<{ expediente: any; sessao: any; registro: any }>()
+const props = defineProps<{ expedient: any; sessao: any; registro: any }>()
 
-const expediente = ref(props.expediente)
+const expedient = ref(props.expedient)
 const sessao = ref(props.sessao)
 const registro = ref(props.registro)
 
 const utilities = new UseUtils()
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 
 const { data, refresh } = await useAsyncData(
     async () => {
         const [sessaoPle, materia] = await Promise.all([
-            apiSPL.sessao(sessao.value.id),
-            apiSPL.materiaSessao(registro.value.materia),
+            apiSAPL.sessao(sessao.value.id),
+            apiSAPL.materiaSessao(registro.value.materia),
         ])
 
         const [tipoMateria, authors, result] = await Promise.all([
-            apiSPL.tipoMateria(materia?.tipo),
-            apiSPL.authorMaterial(materia?.autores),
-            apiSPL.tiporesultadovotacao(registro.value.tipo_resultado_votacao),
+            apiSAPL.tipoMateria(materia?.tipo),
+            apiSAPL.authorMaterial(materia?.autores),
+            apiSAPL.tiporesultadovotacao(registro.value.tipo_resultado_votacao),
         ])
 
         return { sessaoPle, materia, tipoMateria, authors, result }
@@ -30,7 +30,7 @@ watch(
     () => props.registro,
     () => {
         if (registro.value?.id !== props.registro?.id) {
-            expediente.value = props.expediente
+            expedient.value = props.expedient
             sessao.value = props.sessao
             registro.value = props.registro
             refresh()
@@ -60,7 +60,7 @@ const headerContent = computed(() => {
     <div id="results-screen">
         <Header :content="headerContent" />
         <VotingResultsNumbers
-            :expediente="expediente"
+            :expedient="expedient"
             :registro="registro"
             :sessao="sessao"
             :bill="artigo"

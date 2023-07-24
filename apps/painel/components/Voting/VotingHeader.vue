@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-const props = defineProps(['expediente', 'sessao', 'votos', 'poder'])
-const apiSPL = new UseSessaoPlenaria()
+const props = defineProps(['expedient', 'sessao', 'votos', 'poder'])
+const apiSAPL = new UseSessaoPlenaria()
 const utilities = new UseUtils()
 
 const casa = await useAsyncData(async () => {
-    return await apiSPL.casalegislativa()
+    return await apiSAPL.legislativeHouse()
 })
 
 const parlamentaryList = ref(props.votos)
 
-const quorum = ref(await apiSPL.sessaoType(props.sessao.tipo))
+const quorum = ref(await apiSAPL.sessaoType(props.sessao.tipo))
 const quorumMinimo = quorum.value?.quorum_minimo
 
 setInterval(async () => {
@@ -17,7 +17,7 @@ setInterval(async () => {
 }, 2000)
 
 const horarioSessao = props.sessao.data_inicio.split('-').reverse().join('/')
-const materia = ref(await apiSPL.materiaSessao(props.expediente.materia))
+const materia = ref(await apiSAPL.materiaSessao(props.expedient.materia))
 const bill = utilities.bill(materia.value?.numero, materia.value?.ano)
 
 const votes: Votes[] = reactive([

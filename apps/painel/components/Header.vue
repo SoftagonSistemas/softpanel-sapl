@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const props = defineProps(['content'])
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 
 const casa = await useAsyncData(async () => {
-    return await apiSPL.casalegislativa()
+    return await apiSAPL.legislativeHouse()
 })
 const data = ref(props.content)
 

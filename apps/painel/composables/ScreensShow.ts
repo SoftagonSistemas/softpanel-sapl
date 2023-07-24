@@ -53,23 +53,23 @@ class ScreensShow {
     }
 
     constructor(
-        sessaoToday: any,
-        expediente: any,
+        sessionToday: any,
+        expedient: any,
         registro: any,
         orderDay: any
     ) {
         this.context = {
-            sessaoToday: {
-                exist: !!sessaoToday?.id,
-                init: sessaoToday?.iniciada,
-                finalized: sessaoToday?.finalizada,
+            sessionToday: {
+                exist: !!sessionToday?.id,
+                init: sessionToday?.iniciada,
+                finalized: sessionToday?.finalizada,
             },
             expedient: {
-                exist: !!expediente?.id,
-                seeVotation: expediente?.tipo_votacao === 2,
-                VotationOpen: expediente?.votacao_aberta,
-                typeVotation: expediente?.tipo_votacao,
-                result: expediente?.resultado,
+                exist: !!expedient?.id,
+                seeVotation: expedient?.tipo_votacao === 2,
+                VotationOpen: expedient?.votacao_aberta,
+                typeVotation: expedient?.tipo_votacao,
+                result: expedient?.resultado,
             },
             orderDay: {
                 exist: !!orderDay?.id,
@@ -80,7 +80,7 @@ class ScreensShow {
             },
             registerVotation: {
                 exist: !!registro?.id,
-                scenario: registro?.expediente ? 1 : 2,
+                scenario: registro?.expedient ? 1 : 2,
             },
         }
     }
@@ -96,9 +96,9 @@ class ScreensShow {
         // ShowMaterial
         // PollResults
 
-        if (!this.context.sessaoToday.exist) return screen('NoSection')
-        if (!this.context.sessaoToday.init) return screen('NoSection')
-        if (this.context.sessaoToday.finalized) return screen('NoSection')
+        if (!this.context.sessionToday.exist) return screen('NoSection')
+        if (!this.context.sessionToday.init) return screen('NoSection')
+        if (this.context.sessionToday.finalized) return screen('NoSection')
 
         if (this.useUtils.isEqual(this.Votation, this.context.orderDay))
             return screen('VotationOpen', 2)

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const props = defineProps(['infos'])
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 const name = ref()
 const lastName = ref()
 
 const infos = ref(props.infos)
 
 const [parlamentar, party] = await Promise.all([
-    apiSPL.getParlamentar({ id: infos.value?.parlamentar, all: false }),
-    apiSPL.filicaoParlamentar(infos.value?.parlamentar),
+    apiSAPL.getParlamentar({ id: infos.value?.parlamentar, all: false }),
+    apiSAPL.filicaoParlamentar(infos.value?.parlamentar),
 ])
 
 watch(

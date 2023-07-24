@@ -65,7 +65,7 @@ class SessaoPlenaria {
         }
     }
 
-    async casalegislativa(params = { id: 1 }) {
+    async legislativeHouse(params = { id: 1 }) {
         try {
             const headers = {
                 Authorization: `Bearer ${this.config.public.SAPL_TOKEN}`,
@@ -84,7 +84,7 @@ class SessaoPlenaria {
         }
     }
 
-    async expedientes(params: any) {
+    async expedients(params: any) {
         try {
             const headers = {
                 Authorization: `Bearer ${this.config.public.SAPL_TOKEN}`,
@@ -103,14 +103,14 @@ class SessaoPlenaria {
         }
     }
 
-    async sessaoPlenariaPresenca(params: { id?: number; atualizar?: boolean }) {
+    async plenarySessionAttendance(params: { id?: number; atualizar?: boolean }) {
         try {
             const headers = {
                 Authorization: `Bearer ${this.config.public.SAPL_TOKEN}`,
             }
             const data: any = await useAsyncData('parla', () =>
                 $fetch(
-                    `${this.config.public.SAPL_URL}sessao/sessaoplenariapresenca?sessao_plenaria=${params.id}`,
+                    `${this.config.public.SAPL_URL}sessao/plenarySessionAttendance?sessao_plenaria=${params.id}`,
                     {
                         headers,
                         retry: 3,
@@ -380,8 +380,7 @@ class SessaoPlenaria {
             }
 
             const data: any = await $fetch(
-                `${
-                    this.config.public.SAPL_URL
+                `${this.config.public.SAPL_URL
                 }sessao/registrovotacao?data_hora__date=${this.utils.AmericanDateToday()}`,
                 { headers }
             )

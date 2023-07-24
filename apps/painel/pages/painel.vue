@@ -1,45 +1,34 @@
 <script setup lang="ts">
-/**
-Itens para fazer:
- 1 - Procurar sessão em HOJE
- 2 - Caso não tenha hoje, exibe todas as últimas para o clique
- 3 - Se tiver hoje e tiver FECHADO o painel, exibe VEREADORES
- 4 - Ao abrir painel, exibe pauta da reunião
- 5 - Ao colocar em votação atualiza para matéria a ser aprecidada
-
-**/
 const utilities = new UseUtils()
-const { currentTime } = utilities.clock()
-const relogio = ref(currentTime)
 
 const taxaAtualizacao = 95000 // 15 segundos
 const camara = ref()
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 const sessao = ref()
 const vereadores = ref()
 const sessaoAnteriores = ref()
 
-camara.value = await apiSPL.casalegislativa()
+camara.value = await apiSAPL.legislativeHouse()
 
 const today = utilities.AmericanDateToday()
-const [ultimaSessao] = await apiSPL.plenarySession({ hoje: today })
+const [ultimaSessao] = await apiSAPL.plenarySession({ hoje: today })
 
 if (ultimaSessao?.id) {
     sessao.value = ultimaSessao
 
     const id = ultimaSessao.id
-    vereadores.value = await apiSPL.sessaoPlenariaPresenca({ id })
+    vereadores.value = await apiSAPL.plenarySessionAttendance({ id })
 
     // Procurando por novos presentes a cada taxaAtualizacao
     setInterval(async (id: number) => {
-        vereadores.value = await apiSPL.sessaoPlenariaPresenca({
+        vereadores.value = await apiSAPL.plenarySessionAttendance({
             id,
             atualizar: true,
         })
-        sessao.value = await apiSPL.plenarySession({ id, atualizar: true })
+        sessao.value = await apiSAPL.plenarySession({ id })
     }, taxaAtualizacao)
 } else {
-    sessaoAnteriores.value = await apiSPL.plenarySession({})
+    sessaoAnteriores.value = await apiSAPL.plenarySession({})
     console.log('Não tem sessao hoje , exiba na TELAAA')
 }
 </script>
@@ -63,12 +52,8 @@ if (ultimaSessao?.id) {
                 </div>
             </div>
             <div id="agora" class="flex flex-row gap-2 p-1">
-                <div id="data" class="basis-1/2">
-                    {{ relogio.toLocaleDateString() }}
-                </div>
-                <div id="relogio" class="basis-1/2">
-                    {{ relogio.toLocaleTimeString() }}
-                </div>
+                <div id="data" class="basis-1/2">???</div>
+                <div id="relogio" class="basis-1/2">?</div>
             </div>
             <hr class="p-4" />
             <div v-show="!sessao.painel_aberto">

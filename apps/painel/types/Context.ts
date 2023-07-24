@@ -1,5 +1,5 @@
 export interface Context {
-    sessaoToday: SessaoToday
+    sessionToday: SessaoToday
     expedient: ExpedientOrOrderDay
     orderDay: ExpedientOrOrderDay
 

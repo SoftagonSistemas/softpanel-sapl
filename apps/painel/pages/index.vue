@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const utilities = new UseUtils()
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 
 const ScreenShow = ref({ screen: 'NoSection', scenario: 0 })
 const today = utilities.AmericanDateToday()
@@ -9,60 +9,60 @@ const oldExp = ref()
 
 const { data, refresh, pending } = await useAsyncData(
     async () => {
-        const sessaoToday = await apiSPL.plenarySession({ hoje: today })
-        const [expedienteResult, orderDay] = await Promise.all([
-            apiSPL.expedientSession(sessaoToday?.id),
-            apiSPL.dayOrderSession(sessaoToday?.id),
+        const sessionToday = await apiSAPL.plenarySession({ hoje: today })
+        const [expedientResult, orderDay] = await Promise.all([
+            apiSAPL.expedientSession(sessionToday?.id),
+            apiSAPL.dayOrderSession(sessionToday?.id),
         ])
 
         const treating = new TreatingExpedient(
-            expedienteResult,
+            expedientResult,
             oldExp,
             timeExpedienteRead,
             ScreenShow.value
         )
         const {
-            expediente,
+            expedient,
             treatingTimeExpedienteRead,
             treatingRegistroExpediente,
         } = await treating.treatingExpedientAndResult()
 
-        const registroExpediente = treatingRegistroExpediente
-        oldExp.value = expediente
+        const dataExpedient = treatingRegistroExpediente
+        oldExp.value = expedient
         timeExpedienteRead.value = treatingTimeExpedienteRead
 
         return {
-            sessaoToday,
-            expediente,
-            registroExpediente,
+            sessionToday,
+            expedient,
+            dataExpedient,
             orderDay,
         }
     },
     { lazy: true }
 )
 
-const sessaoToday = ref(data.value?.sessaoToday)
-const expediente = ref(data.value?.expediente)
-const registro = ref(data.value?.registroExpediente)
+const sessionToday = ref(data.value?.sessionToday)
+const expedient = ref(data.value?.expedient)
+const registro = ref(data.value?.dataExpedient)
 const orderDay = ref(data.value?.orderDay)
 const vereadores = ref()
-// vereadores.value = await apiSPL.sessaoPlenariaPresenca({ id })
+// vereadores.value = await apiSAPL.plenarySessionAttendance({ id })
 
 setInterval(async () => {
     if (!pending.value) {
         refresh()
 
-        sessaoToday.value = data.value?.sessaoToday
-        expediente.value = data.value?.expediente
-        registro.value = data.value?.registroExpediente
+        sessionToday.value = data.value?.sessionToday
+        expedient.value = data.value?.expedient
+        registro.value = data.value?.dataExpedient
         orderDay.value = data.value?.orderDay
     }
 }, 4000)
 
-watch(sessaoToday, () => {
+watch(sessionToday, () => {
     const ScreenController = new ScreensShow(
-        sessaoToday.value,
-        expediente.value,
+        sessionToday.value,
+        expedient.value,
         registro.value,
         orderDay.value
     )
@@ -72,7 +72,7 @@ watch(sessaoToday, () => {
 
 <template>
     <div id="index">
-        <div class="heitgh-index">
+        <div class="heigth-index">
             <NoSection v-if="ScreenShow.screen === 'NoSection'" />
 
             <div
@@ -85,14 +85,14 @@ watch(sessaoToday, () => {
 
             <Proposition
                 v-if="ScreenShow.screen === 'ShowMaterial'"
-                :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
+                :expedient="ScreenShow.scenario === 1 ? expedient : orderDay"
             />
 
             <Voting
                 v-if="ScreenShow.screen === 'VotationOpen'"
                 status="discussao"
-                :sessao="sessaoToday"
-                :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
+                :sessao="sessionToday"
+                :expedient="ScreenShow.scenario === 1 ? expedient : orderDay"
                 :order-day="ScreenShow.scenario"
             />
 
@@ -100,8 +100,8 @@ watch(sessaoToday, () => {
                 v-if="ScreenShow.screen === 'PollResult'"
                 :result="registro"
                 :registro="registro"
-                :expediente="ScreenShow.scenario === 1 ? expediente : orderDay"
-                :sessao="sessaoToday"
+                :expedient="ScreenShow.scenario === 1 ? expedient : orderDay"
+                :sessao="sessionToday"
             />
         </div>
         <Footer-index />
@@ -109,7 +109,7 @@ watch(sessaoToday, () => {
 </template>
 
 <style scoped>
-.heitgh-index {
+.heigth-index {
     min-height: 100vh;
     max-height: auto;
 }

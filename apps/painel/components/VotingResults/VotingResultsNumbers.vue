@@ -1,28 +1,28 @@
 <script lang="ts" setup>
 const props = defineProps<{
     registro: any
-    expediente: any
+    expedient: any
     sessao: any
     bill: any
 }>()
 
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 
-const expediente = ref(props.expediente)
+const expedient = ref(props.expedient)
 const sessao = ref(props.sessao)
 const registro = ref(props.registro)
 const bill = ref(props.bill)
 
-const quorum = ref(await apiSPL.sessaoType(sessao.value.tipo))
+const quorum = ref(await apiSAPL.sessaoType(sessao.value.tipo))
 
 watch(
     () => props.registro,
     async () => {
-        expediente.value = props.expediente
+        expedient.value = props.expedient
         sessao.value = props.sessao
         registro.value = props.registro
 
-        quorum.value = await apiSPL.sessaoType(sessao.value.tipo)
+        quorum.value = await apiSAPL.sessaoType(sessao.value.tipo)
     }
 )
 

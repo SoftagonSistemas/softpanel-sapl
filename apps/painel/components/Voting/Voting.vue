@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-const props = defineProps(['expediente', 'sessao', 'orderDay', 'votatioOpen'])
+const props = defineProps(['expedient', 'sessao', 'orderDay', 'votatioOpen'])
 
-const apiSPL = new UseSessaoPlenaria()
+const apiSAPL = new UseSessaoPlenaria()
 
-const exp = ref(props.expediente)
+const exp = ref(props.expedient)
 const orderDay = props.orderDay === 2
 const presenca: any = ref()
-const materia = ref(await apiSPL.materiaSessao(props.expediente?.materia))
-const authors = ref(await apiSPL.authorMaterial(materia.value?.autores))
+const materia = ref(await apiSAPL.materiaSessao(props.expedient?.materia))
+const authors = ref(await apiSAPL.authorMaterial(materia.value?.autores))
 
 const { data, refresh, pending } = await useAsyncData(
     async () => {
-        const result: any = await apiSPL.votosSessao({
-            exp: props.expediente?.id,
+        const result: any = await apiSAPL.votosSessao({
+            exp: props.expedient?.id,
             order: orderDay,
         })
 
@@ -30,7 +30,7 @@ const existVotes = computed(() => {
 
 const watchVotes = setInterval(async () => {
     presenca.value = data.value
-    exp.value = props.expediente
+    exp.value = props.expedient
 
     if (!pending.value) {
         if (exp.value) refresh()
@@ -48,7 +48,7 @@ onUnmounted(() => {
             :poder="authors?.poder"
             :votos="presenca"
             :sessao="sessao"
-            :expediente="expediente"
+            :expedient="expedient"
         />
 
         <div>
