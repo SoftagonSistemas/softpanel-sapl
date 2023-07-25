@@ -1,4 +1,4 @@
-class TreatingData {
+class useExpediente {
     apiSAPL = new UseSessaoPlenaria()
 
     constructor(
@@ -6,7 +6,7 @@ class TreatingData {
         private expedientCurrent: any,
         private timeExpedienteRead: any,
         private ScreenShow: any
-    ) {}
+    ) { }
 
     async treatingExpedientAndResult() {
         this.expedientCurrent.value = !this.expedientCurrent.value
@@ -73,4 +73,4 @@ class TreatingData {
     }
 }
 
-export default TreatingData
+export default useExpediente
