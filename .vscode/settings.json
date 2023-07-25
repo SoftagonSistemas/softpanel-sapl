@@ -10,5 +10,10 @@
     },
     "[vue]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "colorize.languages": [
+        "javascript",
+        "typescript",
+        "vue"
+    ]
 }

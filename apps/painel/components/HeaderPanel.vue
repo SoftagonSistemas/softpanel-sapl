@@ -7,10 +7,10 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const apiSAPL = new UseSessaoPlenaria()
+const session = new UseSessaoPlenaria()
 
 const casa = await useAsyncData(async () => {
-    return await apiSAPL.legislativeHouse()
+    return await session.legislativeHouse()
 })
 const data = ref(props)
 </script>
@@ -40,13 +40,13 @@ const data = ref(props)
             </v-col>
 
             <v-col align-self="center" cols="12" sm="12" md="4">
-                <v-alert color="success" variant="tonal" border="bottom">
+                <v-alert color="surface" variant="tonal" border="bottom">
                     <v-sheet
                         color="transparent"
                         class="d-flex align-center justify-center flex-wrap text-center mx-auto px-4"
                         width="100%"
                     >
-                        <strong>TEXTO {{ statusLabel }}</strong>
+                        <strong>Sessão em andamento </strong>
                     </v-sheet>
                 </v-alert>
             </v-col>

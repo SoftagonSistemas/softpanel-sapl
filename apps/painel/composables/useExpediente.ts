@@ -1,75 +1,70 @@
+interface Expediente {
+    id: number
+    __str__: string
+    metadata: Record<string, unknown>
+    data_ordem: string
+    observacao: string
+    numero_ordem: number
+    resultado: string
+    tipo_votacao: number
+    votacao_aberta: boolean
+    registro_aberto: boolean
+    sessao_plenaria: number
+    materia: number
+    tramitacao: null | unknown
+}
+
 class useExpediente {
-    apiSAPL = new UseSessaoPlenaria()
+    config = useRuntimeConfig()
+    headers = { Authorization: '' }
+    private sessaoID: number
+    public expedientes = []
 
-    constructor(
-        private expedient: any,
-        private expedientCurrent: any,
-        private timeExpedienteRead: any,
-        private ScreenShow: any
-    ) { }
+    constructor(sessaoID: number) {
+        this.sessaoID = sessaoID
+        this.headers = {
+            Authorization: `Bearer ${this.config.public.SAPL_TOKEN}`,
+        }
+        this.getExpedientList()
+    }
 
-    async treatingExpedientAndResult() {
-        this.expedientCurrent.value = !this.expedientCurrent.value
-            ? this.expedient
-            : this.expedientCurrent.value
-
-        if (this.expedientCurrent.value && this.expedient?.votacao_aberta) {
-            if (this.expedientCurrent.value?.id !== this.expedient?.id)
-                this.expedientCurrent.value = this.expedient
-
-            if (
-                this.expedientCurrent.value?.id === this.expedient?.id &&
-                !this.expedientCurrent.value?.votacao_aberta &&
-                this.expedient?.votacao_aberta
+    async getExpedientList(): Promise<Expediente[] | null> {
+        try {
+            const { results } = await $fetch<Expediente[] | any>(
+                `${this.config.public.SAPL_URL}sessao/expedientemateria/?sessao_plenaria=${this.sessaoID}`,
+                {
+                    headers: this.headers,
+                }
             )
-                this.expedientCurrent.value = this.expedient
+            if (!results) return null
 
-            if (!this.expedientCurrent.value?.timed) {
-                this.expedientCurrent.value.timed = true
-                this.timeExpedienteRead.value = Date.now()
+            this.expedientes = results
+            return this.expedientes
+        } catch (e: any | Error) {
+            console.warn(e.message)
+        }
+        return null
+    }
+
+    getActiveExpedient() {
+        try {
+            if (!!this.expedientes.length) {
+                const itemsWithOpenRegisterOrVoting = this.expedientes.filter(
+                    (obj: Expediente) =>
+                        obj.registro_aberto === true ||
+                        obj.votacao_aberta === true
+                )
+
+                if (itemsWithOpenRegisterOrVoting.length > 0) {
+                    return itemsWithOpenRegisterOrVoting
+                } else {
+                    return null
+                }
             }
+        } catch (e: any | Error) {
+            console.warn(e.message)
         }
-
-        const resultReadExpediente = await this.apiSAPL.registerRead(
-            this.expedientCurrent.value?.id
-        )
-
-        if (this.expedientCurrent.value?.id)
-            this.expedientCurrent.value.resultado = resultReadExpediente?.id
-                ? 'Matéria lida'
-                : ''
-
-        if (
-            !this.timeExpedienteRead.value &&
-            this.ScreenShow.screen === 'ShowMaterial'
-        )
-            this.timeExpedienteRead.value =
-                this.expedientCurrent.value?.resultado !== ''
-                    ? Date.now()
-                    : null
-
-        const dataExpedient = ref(
-            await this.apiSAPL.registroVotacao(this.timeExpedienteRead.value)
-        )
-
-        if (resultReadExpediente?.id) {
-            const registerExist = await this.apiSAPL.registroVotacao(
-                Date.parse(resultReadExpediente.data_hora)
-            )
-
-            if (registerExist?.id) dataExpedient.value = registerExist
-            else dataExpedient.value = null
-        }
-
-        if (dataExpedient.value?.id) {
-            this.timeExpedienteRead.value = null
-            this.expedientCurrent.value.votacao_aberta = false
-        }
-        return {
-            expedient: this.expedientCurrent.value,
-            treatingTimeExpedienteRead: this.timeExpedienteRead.value,
-            treatingRegistroExpediente: dataExpedient.value,
-        }
+        return null
     }
 }
 
