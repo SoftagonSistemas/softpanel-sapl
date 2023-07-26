@@ -4,13 +4,6 @@ definePageMeta({
     layout: false,
 })
 const session = new useSessaoPlenaria()
-// const sessionToday = await session.plenarySession({ hoje: today })
-
-// const expedient = new useExpediente(sessionToday.id)
-// const expedientList = await expedient.getExpedientList()
-// const expedientActive = expedient.getActiveExpedient()
-// const sessions = await session.getOpenedSession()
-
 /**
  * Verificações essenciais para essa tela.
  * 1    - Tem sessão para hoje?
