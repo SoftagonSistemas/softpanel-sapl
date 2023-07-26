@@ -1,4 +1,4 @@
-interface Session {
+export interface Session {
     id: number
     __str__: string
     metadata: Record<string, unknown>
@@ -28,7 +28,7 @@ interface Session {
 
 class SessaoPlenaria {
     config = useRuntimeConfig()
-    utils = new UseUtils()
+    utils = new useUtils()
     headers = { Authorization: '' }
     sessions: Session[] | null = []
     constructor() {

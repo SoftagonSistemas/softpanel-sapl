@@ -1,23 +1,14 @@
-<script setup lang="ts">
-const headerContent = computed(() => {
-    return {
-        bill: 'Maça',
-        poder: 'Banana',
-        status: 'Pera',
-        section: 'Manga',
-    }
-})
-</script>
+<script setup lang="ts"></script>
 <template>
     <header>
-        <slot name="header">
-            <HeaderPanel :content="headerContent" />
+        <slot name="headerPanel">
+            <HeaderPanel />
         </slot>
     </header>
     <main>
         <slot />
     </main>
     <footer>
-        <slot name="header"> Footer foot looser </slot>
+        <slot name="header"> Softagon Sistemas </slot>
     </footer>
 </template>
