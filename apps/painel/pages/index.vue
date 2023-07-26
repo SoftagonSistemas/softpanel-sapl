@@ -10,7 +10,7 @@ const today = util.AmericanDateToday()
 // const expedient = new useExpediente(sessionToday.id)
 // const expedientList = await expedient.getExpedientList()
 // const expedientActive = expedient.getActiveExpedient()
-const sessions = await session.getActiveSession()
+const sessions = await session.getOpenedSession()
 </script>
 
 <template>

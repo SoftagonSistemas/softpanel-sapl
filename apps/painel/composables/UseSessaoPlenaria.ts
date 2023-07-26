@@ -70,13 +70,29 @@ class SessaoPlenaria {
         return null
     }
 
-    async getActiveSession(): Promise<Session[] | null> {
+    async getInitiatedSession(): Promise<Session[] | null> {
         try {
             if (!this.sessions || this.sessions.length === 0) {
                 this.sessions = await this.getSessions()
             }
             const itemsWithOpenRegisterOrVoting = this.sessions?.filter(
-                (obj: Session) => obj.iniciada === true
+                (obj: Session) =>
+                    obj.iniciada === true && obj.finalizada === false
+            )
+            return itemsWithOpenRegisterOrVoting ?? null
+        } catch (e: any | Error) {
+            console.warn(e.message)
+        }
+        return null
+    }
+
+    async getOpenedSession(): Promise<Session[] | null> {
+        try {
+            if (!this.sessions || this.sessions.length === 0) {
+                this.sessions = await this.getSessions()
+            }
+            const itemsWithOpenRegisterOrVoting = this.sessions?.filter(
+                (obj: Session) => obj.painel_aberto === true
             )
             return itemsWithOpenRegisterOrVoting ?? null
         } catch (e: any | Error) {
