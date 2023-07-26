@@ -7,8 +7,7 @@ const props = defineProps({
         default: 'Poder Legislativo',
     },
     status: {
-        type: String,
-        default: 'Aguardando sessão',
+        default: 'closed',
     },
     materia: {
         type: String,
@@ -23,20 +22,10 @@ const props = defineProps({
         default: [],
     },
 })
-function selectColorbyStatus(status: string) {
-    switch (status) {
-        case 'Aguardando sessão':
-            return 'surface'
-        case 'Em discussão':
-            return 'primary'
-        case 'Vetada':
-            return 'error'
-        default:
-            return 'warning'
-    }
-}
+
 const theHouse = new useCasaLegislativa()
 const house: LegilsativeHouse | null = await theHouse.getLegilsativeHouse()
+const session = new useSessaoPlenaria()
 </script>
 
 <template>
@@ -65,7 +54,7 @@ const house: LegilsativeHouse | null = await theHouse.getLegilsativeHouse()
 
             <v-col align-self="center" cols="12" sm="12" md="4">
                 <v-alert
-                    :color="selectColorbyStatus(props.status)"
+                    :color="session.getStatusData(props.status).color"
                     variant="tonal"
                     border="bottom"
                 >
@@ -74,7 +63,9 @@ const house: LegilsativeHouse | null = await theHouse.getLegilsativeHouse()
                         class="d-flex align-center justify-center flex-wrap text-center mx-auto px-4"
                         width="100%"
                     >
-                        <strong>{{ props.status }}</strong>
+                        <strong>{{
+                            session.getStatusData(props.status).text
+                        }}</strong>
                     </v-sheet>
                 </v-alert>
             </v-col>

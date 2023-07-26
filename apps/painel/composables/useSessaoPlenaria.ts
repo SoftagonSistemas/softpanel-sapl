@@ -25,6 +25,15 @@ export interface Session {
     legislatura: number
     correspondencias: unknown[]
 }
+export type VotingPanelStatus =
+    | 'open'
+    | 'initiated'
+    | 'scheduled'
+    | 'multi'
+    | 'started'
+    | 'in_voting'
+    | 'reading'
+    | 'closed'
 
 class SessaoPlenaria {
     config = useRuntimeConfig()
@@ -99,6 +108,24 @@ class SessaoPlenaria {
             console.warn(e.message)
         }
         return null
+    }
+
+    getStatusData(currentStatus: VotingPanelStatus | string) {
+        console.log(currentStatus)
+        switch (currentStatus) {
+            case 'open':
+                return { text: 'Sessão aberta', color: 'primary' }
+            case 'closed':
+                return { text: 'Sem sessões agendadas', color: 'surface' }
+            case 'scheduled':
+                return { text: 'Aguardando iniciar', color: 'secondary' }
+            case 'multi':
+                return { text: 'Várias sessões hoje', color: 'info' }
+            case 'initiated':
+                return { text: 'Sessão iniciada', color: 'primary' }
+            default:
+                return { text: 'Sem sessões hoje', color: 'warning' }
+        }
     }
 
     async plenarySession(params: {
