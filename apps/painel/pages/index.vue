@@ -66,20 +66,18 @@ setInterval(async () => {
         refresh()
     }
     sessionToday.value = await pollData()
-}, 4000)
+}, 5000)
+
+console.log(currentStatus.value)
 </script>
 
 <template>
     <div id="softpanel">
-        {{ sessionToday }}
+        OPa {{ currentStatus }}
         <pre>{{ currentStatus }}</pre>
         <NuxtLayout name="softpanel">
             <template #headerPanel>
-                <HeaderPanel
-                    :status="currentStatus"
-                    materia="Nenhuma"
-                    sessao="Alguma"
-                />
+                <HeaderPanel :status="currentStatus" materia="" sessao="" />
             </template>
             <div id="content">
                 <pre>

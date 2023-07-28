@@ -89,6 +89,7 @@ const session = new useSessaoPlenaria()
                     </p>
                 </div>
                 <v-divider
+                    v-show="props.sessao"
                     :thickness="1"
                     class="border-opacity-75"
                     color="grey-darken-4"
