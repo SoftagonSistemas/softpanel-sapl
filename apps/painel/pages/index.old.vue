@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const utilities = new UseUtils()
-const apiSAPL = new UseSessaoPlenaria()
+const utilities = new useUtils()
+const apiSAPL = new useSessaoPlenaria()
 
 const ScreenShow = ref({ screen: 'NoSection', scenario: 0 })
 const today = utilities.AmericanDateToday()

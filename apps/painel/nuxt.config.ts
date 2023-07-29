@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+    ssr: false,
     nitro: {
         preset: 'cloudflare-pages',
     },
@@ -32,7 +33,7 @@ export default defineNuxtConfig({
                         colors: {
                             background: '#0C111B',
                             surface: '#111827',
-                            primary: '#6366f1',
+                            primary: '#4f46e5',
                             secondary: '#9333ea',
                             error: '#ef4444',
                             info: '#3b82f6',
@@ -47,9 +48,6 @@ export default defineNuxtConfig({
     app: {
         pageTransition: {
             name: 'rotate',
-        },
-        layoutTransition: {
-            name: 'slide-in',
         },
         head: {
             htmlAttrs: {

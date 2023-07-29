@@ -1,108 +1,108 @@
 <script setup lang="ts">
-interface Props {
-    bill: string
-    poder?: string
-    status?: string
-    section?: string
-}
-const props = defineProps<Props>()
+import { LegilsativeHouse } from '@/composables/useCasaLegislativa'
 
-const apiSAPL = new UseSessaoPlenaria()
-
-const casa = await useAsyncData(async () => {
-    return await apiSAPL.legislativeHouse()
-})
-const data = ref(props)
-
-watch(
-    () => props,
-    () => {
-        data.value = props
-    }
-)
-
-const statusLabel = computed<string>(() => {
-    const labels = {
-        materialRead: 'Matéria Lida',
-        discussao: 'Em discussão',
-        R: 'Vetada',
-        A: 'Aprovada',
-        SemSessao: 'Sem Sessão em andamento',
-    }
-
-    return labels[data.value?.status]
+const props = defineProps({
+    poder: {
+        type: String,
+        default: 'Poder Legislativo',
+    },
+    status: {
+        default: 'closed',
+    },
+    materia: {
+        type: String,
+        default: '',
+    },
+    sessao: {
+        type: String,
+        default: '',
+    },
+    votacoes: {
+        type: Array,
+        default: [],
+    },
 })
 
-const statusColor = computed<string>(() => {
-    const colors = {
-        materialRead: 'bg-green',
-        discussao: 'bg-light-blue-darken-4',
-        R: 'bg-red-darken-1',
-        A: 'bg-green',
-        SemSessao: 'bg-blue-grey',
-    }
-
-    return colors[data.value?.status]
-})
+const theHouse = new useCasaLegislativa()
+const house: LegilsativeHouse | null = await theHouse.getLegilsativeHouse()
+const session = new useSessaoPlenaria()
 </script>
 
 <template>
-    <v-card id="header">
-        <v-row class="bg-grey-lighten-4 pa-5">
+    <v-card id="headerPanel">
+        <v-row class="bg-grey-lighten-4 pa-4" justify="center">
             <v-col cols="12" sm="12" md="4">
                 <v-row>
                     <v-col class="d-flex justify-center pa-0 pt-1" cols="12">
                         <v-img
-                            height="80"
                             max-width="100"
-                            :src="casa.data.value?.logotipo"
-                            alt=""
-                            srcset=""
+                            :src="house?.logotipo"
+                            :alt="house?.nome"
                         />
                     </v-col>
-                    <v-col class="pa-1" cols="12">
-                        <h6
-                            class="text-center text-bold font-weight-bold text-subtitle-1"
+                    <v-col class="pa-1" cols="12" justify="center">
+                        <v-sheet
+                            color="transparent"
+                            class="d-flex align-center justify-center flex-wrap text-center mx-auto px-4"
+                            width="100%"
                         >
-                            {{ casa.data.value?.nome }}
-                        </h6>
+                            <strong>{{ house?.nome }}</strong>
+                        </v-sheet>
                     </v-col>
                 </v-row>
             </v-col>
 
             <v-col align-self="center" cols="12" sm="12" md="4">
-                <div class="d-flex justify-center w-100">
-                    <p
-                        class="w-75 py-2 text-center text-uppercase text-grey-lighten-4 text-h6"
-                        :class="statusColor"
+                <v-alert
+                    :color="session.getStatusData(props.status).color"
+                    variant="tonal"
+                    border="bottom"
+                >
+                    <v-sheet
+                        color="transparent"
+                        class="d-flex align-center justify-center flex-wrap text-center mx-auto px-4"
+                        width="100%"
                     >
-                        <strong>{{ statusLabel }}</strong>
-                    </p>
-                </div>
+                        <strong>{{
+                            session.getStatusData(props.status).text
+                        }}</strong>
+                    </v-sheet>
+                </v-alert>
             </v-col>
 
             <v-col cols="12" sm="12" md="4" class="d-flex justify-center">
-                <div
-                    class="d-flex flex-column justify-center border-definition text-right pr-5"
-                >
-                    <div class="font-weight-bold">
-                        <p v-if="data.poder">
-                            {{ data.poder }}
-                        </p>
-                        <p v-else>Poder Legislativo</p>
-                    </div>
-                    <p>{{ data.bill }}</p>
-                    <p v-if="data.section">
-                        {{ `Sessão ${data.section}` }}
+                <div class="d-flex flex-column justify-center text-right pr-3">
+                    <h3 id="poder">{{ props.poder }}</h3>
+                    <p
+                        v-show="props.materia !== ''"
+                        id="materia"
+                        class="font-weight-medium"
+                    >
+                        {{ props.materia }}
                     </p>
+                    <p
+                        v-show="props.sessao !== ''"
+                        id="sessao"
+                        class="font-weight-regular"
+                    >
+                        {{ props.sessao }}
+                    </p>
+                </div>
+                <v-divider
+                    v-show="props.sessao"
+                    :thickness="1"
+                    class="border-opacity-75"
+                    color="grey-darken-4"
+                    vertical
+                ></v-divider>
+                <div
+                    id="votacoes"
+                    v-if="!!props.votacoes?.length"
+                    class="d-flex flex-column justify-center text-right pl-3"
+                >
+                    Votações aqui
                 </div>
             </v-col>
         </v-row>
     </v-card>
 </template>
-
-<style scoped>
-.border-definition {
-    border-right: 3px solid #757575;
-}
-</style>
