@@ -61,28 +61,37 @@ const { data, refresh, pending } = await useAsyncData(
     },
     { lazy: true }
 )
+const materia = ref()
+const sessao = ref()
+const parlamentares = ref()
+const sessaoID = ref(sessionToday.value?.at(0).id)
+
 setInterval(async () => {
     if (!pending.value) {
         refresh()
     }
     sessionToday.value = await pollData()
+    sessaoID.value = sessionToday.value?.at(0).id
+    sessao.value = sessionToday.value?.at(0).__str__
 }, 5000)
 
-const materia = ref()
-const sessao = ref()
-watchEffect(async () => {
-    const sessaoID = ref(sessionToday.value?.at(0).id)
-    sessao.value = sessionToday.value?.at(0).__str__
+setInterval(async () => {
+    if (!pending.value) {
+        refresh()
+    }
+    checkExpedient()
+    checkAssemblyman()
+}, 15000)
+
+async function checkExpedient() {
     const expedient = new useExpediente(sessaoID.value)
     const materiaList = await expedient.getActiveExpedient()
     materia.value = materiaList?.__str__
-    pegaParlamentar(sessaoID.value)
-})
+}
 
-const parlamentares = ref()
-async function pegaParlamentar(sessaoID: number) {
-    const parlamentar = new useParlamentar(sessaoID)
-    parlamentares.value = await parlamentar.getAllParliamentarians()
+async function checkAssemblyman() {
+    const parlamentar = new useParlamentar(sessaoID.value)
+    parlamentares.value = await parlamentar.getAllAssemblyman()
 }
 </script>
 
@@ -97,8 +106,11 @@ async function pegaParlamentar(sessaoID: number) {
                 />
             </template>
             <div id="content">
+                <div id="assemblyman" v-show="parlamentares">
+                    <AssemblymanList :councilors="parlamentares" />
+                </div>
                 <pre>
-                    {{ parlamentares }}
+                    <!-- {{ parlamentares }} -->
                     <!-- {{ sessions }} -->
                     <!-- {{ expedientActive }} -->
                     <!-- {{ expedientList }} -->

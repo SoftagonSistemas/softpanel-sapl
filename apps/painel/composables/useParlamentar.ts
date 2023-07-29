@@ -1,4 +1,4 @@
-interface Parliamentarian {
+export interface Assemblyman {
     id: number
     __str__: string
     metadata: Record<string, any>
@@ -18,12 +18,16 @@ interface Parliamentarian {
     cropping: string
     nivel_instrucao: string | null
 }
+type FilterType = {
+    ativo: boolean
+    presente?: boolean
+}
 
 class useParlamentar {
     config = useRuntimeConfig()
     headers = { Authorization: '' }
     private sessaoID: number
-    public parlamentar: Parliamentarian[] | null = []
+    public parlamentar: Assemblyman[] | null = []
 
     constructor(sessaoID: number) {
         this.sessaoID = sessaoID
@@ -32,18 +36,24 @@ class useParlamentar {
         }
     }
 
-    async getAllParliamentarians(): Promise<Parliamentarian[] | null> {
+    async getAllAssemblyman(ativo = true): Promise<Assemblyman[] | null> {
         try {
             if (!this.sessaoID) return null
 
-            const { results } = await $fetch<Parliamentarian[] | any>(
+            const { results } = await $fetch<Assemblyman[] | any>(
                 `${this.config.public.SAPL_URL}parlamentares/parlamentar/`,
                 {
                     headers: this.headers,
                 }
             )
             if (!results) return null
-            this.parlamentar = results
+
+            //filter Ativo
+            const filteredData = results?.filter(
+                (obj: Assemblyman) => obj.ativo === ativo
+            )
+
+            this.parlamentar = filteredData
             return this.parlamentar
         } catch (e: any | Error) {
             console.warn(e.message)
