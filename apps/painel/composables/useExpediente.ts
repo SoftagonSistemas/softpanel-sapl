@@ -18,18 +18,19 @@ class useExpediente {
     config = useRuntimeConfig()
     headers = { Authorization: '' }
     private sessaoID: number
-    public expedientes = []
+    public expedientes: Expediente[] | null = []
 
     constructor(sessaoID: number) {
         this.sessaoID = sessaoID
         this.headers = {
             Authorization: `Bearer ${this.config.public.SAPL_TOKEN}`,
         }
-        this.getExpedientList()
     }
 
     async getExpedientList(): Promise<Expediente[] | null> {
         try {
+            if (!this.sessaoID) return null
+
             const { results } = await $fetch<Expediente[] | any>(
                 `${this.config.public.SAPL_URL}sessao/expedientemateria/?sessao_plenaria=${this.sessaoID}`,
                 {
@@ -37,7 +38,6 @@ class useExpediente {
                 }
             )
             if (!results) return null
-
             this.expedientes = results
             return this.expedientes
         } catch (e: any | Error) {
@@ -46,9 +46,12 @@ class useExpediente {
         return null
     }
 
-    getActiveExpedient() {
+    async getActiveExpedient() {
         try {
-            if (!!this.expedientes.length) {
+            if (!this.expedientes || this.expedientes.length === 0) {
+                this.expedientes = await this.getExpedientList()
+            }
+            if (!!this.expedientes?.length) {
                 const itemsWithOpenRegisterOrVoting = this.expedientes.filter(
                     (obj: Expediente) =>
                         obj.registro_aberto === true ||
@@ -56,7 +59,7 @@ class useExpediente {
                 )
 
                 if (itemsWithOpenRegisterOrVoting.length > 0) {
-                    return itemsWithOpenRegisterOrVoting
+                    return itemsWithOpenRegisterOrVoting?.at(0)
                 } else {
                     return null
                 }

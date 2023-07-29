@@ -68,20 +68,37 @@ setInterval(async () => {
     sessionToday.value = await pollData()
 }, 5000)
 
-console.log(currentStatus.value)
+const materia = ref()
+const sessao = ref()
+watchEffect(async () => {
+    const sessaoID = ref(sessionToday.value?.at(0).id)
+    sessao.value = sessionToday.value?.at(0).__str__
+    const expedient = new useExpediente(sessaoID.value)
+    const materiaList = await expedient.getActiveExpedient()
+    materia.value = materiaList?.__str__
+    pegaParlamentar(sessaoID.value)
+})
+
+const parlamentares = ref()
+async function pegaParlamentar(sessaoID: number) {
+    const parlamentar = new useParlamentar(sessaoID)
+    parlamentares.value = await parlamentar.getAllParliamentarians()
+}
 </script>
 
 <template>
     <div id="softpanel">
-        OPa {{ currentStatus }}
-        <pre>{{ currentStatus }}</pre>
         <NuxtLayout name="softpanel">
             <template #headerPanel>
-                <HeaderPanel :status="currentStatus" materia="" sessao="" />
+                <HeaderPanel
+                    :status="currentStatus"
+                    :materia="materia"
+                    :sessao="sessao"
+                />
             </template>
             <div id="content">
                 <pre>
-                    Tudo.
+                    {{ parlamentares }}
                     <!-- {{ sessions }} -->
                     <!-- {{ expedientActive }} -->
                     <!-- {{ expedientList }} -->

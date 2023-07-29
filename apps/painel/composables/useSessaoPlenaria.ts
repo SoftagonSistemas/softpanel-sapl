@@ -46,7 +46,7 @@ class SessaoPlenaria {
         }
     }
 
-    async getSessions(): Promise<Session[] | null> {
+    async getSessions(today = true): Promise<Session[] | null> {
         try {
             const { results } = await $fetch<Session[] | any>(
                 `${this.config.public.SAPL_URL}sessao/sessaoplenaria/`,
@@ -55,6 +55,9 @@ class SessaoPlenaria {
                 }
             )
             this.sessions = results
+            if (today) {
+                this.sessions = await this.getTodaySession()
+            }
             return this.sessions
         } catch (e: any | Error) {
             console.warn(e.message)
@@ -62,15 +65,16 @@ class SessaoPlenaria {
         return null
     }
 
-    async getTodaySession(): Promise<Session[] | null> {
+    async getTodaySession(finalizada = false): Promise<Session[] | null> {
         try {
             if (!this.sessions || this.sessions.length === 0) {
                 this.sessions = await this.getSessions()
             }
 
             const sessionsToday: Session[] | undefined = this.sessions?.filter(
-                (item: Session) =>
-                    item.data_inicio === this.utils.AmericanDateToday()
+                (obj: Session) =>
+                    obj.data_inicio === this.utils.AmericanDateToday() &&
+                    obj.finalizada === finalizada
             )
             return sessionsToday ?? null
         } catch (e: any | Error) {
@@ -125,85 +129,6 @@ class SessaoPlenaria {
                 return { text: 'Sessão iniciada', color: 'primary' }
             default:
                 return { text: 'Sem sessões hoje', color: 'warning' }
-        }
-    }
-
-    async plenarySession(params: {
-        id?: number
-        hoje?: string
-        oldSections?: boolean
-        page?: number
-    }) {
-        try {
-            if (params.oldSections) {
-                params.page = params.page ?? 1
-                const data: any = await $fetch(
-                    `${this.config.public.SAPL_URL}sessao/sessaoplenaria?finalizada__istartswith=true&page=${params.page}`,
-                    {
-                        headers: this.headers,
-                    }
-                )
-                if (!data.pagination) return null
-                return data
-            }
-            if (params.hoje) {
-                const data: any = await $fetch(
-                    `${this.config.public.SAPL_URL}sessao/sessaoplenaria/?data_inicio=${params.hoje}`,
-                    {
-                        headers: this.headers,
-                    }
-                )
-                if (!data) return null
-                return data.results[0]
-            }
-            if (params.id) {
-                const data: any = await $fetch(
-                    `${this.config.public.SAPL_URL}sessao/sessaoplenaria/${params.id}`,
-                    {
-                        headers: this.headers,
-                    }
-                )
-                return data
-            }
-            const data: any = await $fetch(
-                `${this.config.public.SAPL_URL}sessao-plenaria`,
-                {
-                    headers: this.headers,
-                }
-            )
-            return data.results.length ? data?.results : null
-        } catch (e) {
-            console.warn(e)
-        }
-    }
-
-    async legislativeHouse(params = { id: 1 }) {
-        try {
-            const data: any = await $fetch(
-                `${this.config.public.SAPL_URL}base/casalegislativa/${params.id}`,
-                {
-                    headers: this.headers,
-                }
-            )
-            if (data) return data
-            else return null
-        } catch (e) {
-            console.warn(e)
-        }
-    }
-
-    async expedients(params: any) {
-        try {
-            const data: any = await $fetch(
-                `${this.config.public.SAPL_URL}sessao/sessaoplenaria/${params.id}/expedientes/`,
-                {
-                    headers: this.headers,
-                }
-            )
-            if (data.results.length) return data.results
-            else return null
-        } catch (e) {
-            console.warn(e)
         }
     }
 
